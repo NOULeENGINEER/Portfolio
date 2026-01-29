@@ -1,0 +1,96 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id            String    @id @default(cuid())
+  email         String    @unique
+  name          String?
+  password      String
+  role          String    @default("admin")
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+}
+
+model Resume {
+  id            String    @id @default(cuid())
+  name          String
+  headline      String?
+  location      String?
+  summary       String?
+  email         String?
+  phone         String?
+  website       String?
+  linkedin      String?
+  github        String?
+  twitter       String?
+  skills        String?   // JSON
+  languages     String?   // JSON
+  experience    String?   // JSON
+  education     String?   // JSON
+  certifications String?  // JSON
+  updatedAt     DateTime  @updatedAt
+}
+
+model Project {
+  id                    String       @id @default(cuid())
+  slug                  String       @unique
+  title                 String
+  shortSummary          String?
+  longDescription       String?      // Markdown
+  status                String       @default("Draft") // Draft, Published, Archived
+  startDate             DateTime?
+  endDate               DateTime?
+  role                  String?
+  organization          String?
+  techTags              String?      // JSON array
+  skillTags             String?      // JSON array
+  githubUrl             String?
+  demoUrl               String?
+  blogUrl               String?
+  featured              Boolean      @default(false)
+  visibility            String       @default("public") // public, private
+  views                 Int          @default(0)
+  createdAt             DateTime     @default(now())
+  updatedAt             DateTime     @updatedAt
+  attachments           Attachment[]
+}
+
+model Attachment {
+  id            String    @id @default(cuid())
+  projectId     String
+  project       Project   @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  originalName  String
+  storedName    String
+  mimeType      String
+  size          Int
+  sha256        String?
+  isPrivate     Boolean   @default(false)
+  uploadedAt    DateTime  @default(now())
+  
+  @@index([projectId])
+}
+
+model ContactMessage {
+  id            String    @id @default(cuid())
+  name          String
+  email         String
+  subject       String?
+  message       String
+  status        String    @default("unread") // unread, read, archived
+  createdAt     DateTime  @default(now())
+  ipAddress     String?
+}
+
+model Tag {
+  id        String   @id @default(cuid())
+  name      String   @unique
+  type      String   // tech, skill, category
+  count     Int      @default(0)
+  createdAt DateTime @default(now())
+}
