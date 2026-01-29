@@ -89,11 +89,21 @@ export default async function Home() {
     getFeaturedProjects(),
   ])
 
-  const skills: Skill[] = resume?.skills ? JSON.parse(resume.skills) : []
-  const languages: Language[] = resume?.languages ? JSON.parse(resume.languages) : []
-  const experience: Experience[] = resume?.experience ? JSON.parse(resume.experience) : []
-  const education: Education[] = resume?.education ? JSON.parse(resume.education) : []
-  const certifications: Certification[] = resume?.certifications ? JSON.parse(resume.certifications) : []
+  const parseJSON = <T,>(data: string | null | undefined, fallback: T): T => {
+    if (!data) return fallback
+    try {
+      return JSON.parse(data)
+    } catch (error) {
+      console.error("Error parsing JSON:", error)
+      return fallback
+    }
+  }
+
+  const skills: Skill[] = parseJSON(resume?.skills, [])
+  const languages: Language[] = parseJSON(resume?.languages, [])
+  const experience: Experience[] = parseJSON(resume?.experience, [])
+  const education: Education[] = parseJSON(resume?.education, [])
+  const certifications: Certification[] = parseJSON(resume?.certifications, [])
 
   const getInitials = (name?: string) => {
     if (!name) return "ND"
@@ -306,7 +316,7 @@ export default async function Home() {
                   <CardContent>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                       {projects.map((project) => {
-                        const techTags = project.techTags ? JSON.parse(project.techTags) : []
+                        const techTags = parseJSON<string[]>(project.techTags, [])
                         return (
                           <Card key={project.id} className="hover:border-primary transition-colors">
                             <CardHeader>
