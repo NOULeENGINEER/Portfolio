@@ -3,10 +3,12 @@ import { notFound } from "next/navigation"
 import { ArrowLeft } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { Separator } from "@/components/ui/separator"
 import { prisma } from "@/lib/prisma"
 import { ProjectForm } from "../project-form"
 import { updateProject } from "../actions"
 import { AttachmentsList } from "./attachments-list"
+import { FileUpload } from "@/components/admin/file-upload"
 
 export const dynamic = "force-dynamic"
 
@@ -73,16 +75,29 @@ export default async function EditProjectPage({ params }: EditProjectPageProps) 
         submitLabel="Update Project"
       />
 
-      {project.attachments.length > 0 && (
-        <Card>
-          <CardHeader>
-            <CardTitle>Attachments ({project.attachments.length})</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <AttachmentsList attachments={project.attachments} />
-          </CardContent>
-        </Card>
-      )}
+      <Card>
+        <CardHeader>
+          <CardTitle>File Attachments</CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-6">
+          <FileUpload
+            projectId={id}
+            isPrivate={project.visibility === "private"}
+          />
+          
+          {project.attachments.length > 0 && (
+            <>
+              <Separator />
+              <div>
+                <h3 className="text-sm font-medium mb-3">
+                  Uploaded Files ({project.attachments.length})
+                </h3>
+                <AttachmentsList attachments={project.attachments} />
+              </div>
+            </>
+          )}
+        </CardContent>
+      </Card>
     </div>
   )
 }

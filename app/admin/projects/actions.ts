@@ -162,7 +162,7 @@ export async function deleteAttachment(id: string): Promise<FormState> {
   try {
     const attachment = await prisma.attachment.findUnique({
       where: { id },
-      select: { projectId: true },
+      select: { projectId: true, storedName: true },
     })
 
     if (!attachment) {
@@ -175,6 +175,17 @@ export async function deleteAttachment(id: string): Promise<FormState> {
     await prisma.attachment.delete({
       where: { id },
     })
+
+    // Delete physical file
+    try {
+      const fs = await import("fs/promises")
+      const path = await import("path")
+      const filePath = path.join(process.cwd(), "uploads", attachment.storedName)
+      await fs.unlink(filePath)
+    } catch (fileError) {
+      console.error("Failed to delete file from disk:", fileError)
+      // Continue even if file deletion fails
+    }
 
     revalidatePath(`/admin/projects/${attachment.projectId}`)
     

@@ -132,7 +132,7 @@ export function AttachmentsList({ attachments }: AttachmentsListProps) {
                       title="Download"
                       asChild
                     >
-                      <a href={`/api/attachments/${attachment.id}`} download>
+                      <a href={`/api/files/${attachment.id}`} download>
                         <Download className="h-4 w-4" />
                       </a>
                     </Button>
