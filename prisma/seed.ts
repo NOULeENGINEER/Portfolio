@@ -36,25 +36,24 @@ async function main() {
       linkedin: 'https://linkedin.com/in/noussayr-derbel',
       github: 'https://github.com/noussayr',
       twitter: 'https://twitter.com/noussayr',
-      skills: JSON.stringify({
-        'Programming': ['TypeScript', 'Python', 'Go', 'Java'],
-        'Frontend': ['React', 'Next.js', 'TailwindCSS', 'Vue.js'],
-        'Backend': ['Node.js', 'Express', 'FastAPI', 'Spring Boot'],
-        'Cloud & DevOps': ['AWS', 'Azure', 'Docker', 'Kubernetes', 'Terraform'],
-        'Databases': ['PostgreSQL', 'MongoDB', 'Redis', 'Prisma'],
-        'Security': ['OAuth2', 'JWT', 'OWASP', 'Penetration Testing'],
-      }),
+      skills: JSON.stringify([
+        { category: 'Programming', items: ['TypeScript', 'Python', 'Go', 'Java'] },
+        { category: 'Frontend', items: ['React', 'Next.js', 'TailwindCSS', 'Vue.js'] },
+        { category: 'Backend', items: ['Node.js', 'Express', 'FastAPI', 'Spring Boot'] },
+        { category: 'Cloud & DevOps', items: ['AWS', 'Azure', 'Docker', 'Kubernetes', 'Terraform'] },
+        { category: 'Databases', items: ['PostgreSQL', 'MongoDB', 'Redis', 'Prisma'] },
+        { category: 'Security', items: ['OAuth2', 'JWT', 'OWASP', 'Penetration Testing'] },
+      ]),
       languages: JSON.stringify([
-        { name: 'Arabic', level: 'Native' },
-        { name: 'French', level: 'Native' },
-        { name: 'English', level: 'Professional' },
+        { name: 'Arabic', proficiency: 'Native' },
+        { name: 'French', proficiency: 'Native' },
+        { name: 'English', proficiency: 'Professional' },
       ]),
       experience: JSON.stringify([
         {
           role: 'Senior Full-Stack Developer',
           company: 'TechCorp Solutions',
-          location: 'Remote',
-          startDate: '2021-06',
+          startDate: 'Jun 2021',
           endDate: null,
           description: 'Leading development of microservices architecture serving 100K+ users. Built CI/CD pipelines reducing deployment time by 60%.',
           achievements: [
@@ -66,9 +65,8 @@ async function main() {
         {
           role: 'Full-Stack Developer',
           company: 'StartupXYZ',
-          location: 'Tunis, Tunisia',
-          startDate: '2019-03',
-          endDate: '2021-05',
+          startDate: 'Mar 2019',
+          endDate: 'May 2021',
           description: 'Developed customer-facing web applications using React and Node.js. Implemented real-time features and payment integrations.',
           achievements: [
             'Built MVP in 3 months leading to Series A funding',
@@ -81,7 +79,6 @@ async function main() {
         {
           degree: 'Master of Science in Computer Science',
           institution: 'University of Tunis',
-          location: 'Tunis, Tunisia',
           startDate: '2016',
           endDate: '2018',
           description: 'Focus on distributed systems and cloud computing',
@@ -89,7 +86,6 @@ async function main() {
         {
           degree: 'Bachelor of Science in Software Engineering',
           institution: 'ESPRIT',
-          location: 'Tunis, Tunisia',
           startDate: '2013',
           endDate: '2016',
         },
@@ -98,13 +94,13 @@ async function main() {
         {
           name: 'AWS Certified Solutions Architect - Professional',
           issuer: 'Amazon Web Services',
-          date: '2022',
+          date: 'Oct 2022',
           url: 'https://aws.amazon.com/certification/',
         },
         {
           name: 'Certified Kubernetes Administrator (CKA)',
           issuer: 'Cloud Native Computing Foundation',
-          date: '2021',
+          date: 'Mar 2021',
         },
       ]),
     },
