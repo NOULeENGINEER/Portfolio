@@ -1,0 +1,1360 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Noussayr Derbel - Cybersecurity Engineer</title>
+<meta name="description" content="Portfolio of Noussayr Derbel, focused on DFIR, detection engineering, threat hunting, and security leadership.">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;700&family=Orbitron:wght@600;700;800&family=Syne:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:       #0a0c10;
+  --bg2:      #0f1117;
+  --bg3:      #161a24;
+  --border:   #1e2535;
+  --border2:  #2a3347;
+  --cyan:     #00d4ff;
+  --cyan-dim: #0099bb;
+  --cyan-bg:  rgba(0,212,255,0.06);
+  --green:    #00e5a0;
+  --green-dim:#009966;
+  --amber:    #f59e0b;
+  --red:      #ef4444;
+  --text:     #e2e8f0;
+  --text-mid: #94a3b8;
+  --text-dim: #4a5568;
+  --nav-bg:   rgba(10,12,16,0.92);
+  --scanline: rgba(0,0,0,0.03);
+  --hero-grid:rgba(0,212,255,0.03);
+  --hero-glow:rgba(0,212,255,0.08);
+  --btn-primary-text: #0a0c10;
+  --mono:     'JetBrains Mono', monospace;
+  --sans:     'Syne', sans-serif;
+  --display:  'Orbitron', sans-serif;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--sans);
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+
+body.theme-light {
+  --bg:       #f3f7fd;
+  --bg2:      #ffffff;
+  --bg3:      #eaf1fb;
+  --border:   #d3dfef;
+  --border2:  #b2c6e2;
+  --cyan:     #0066ff;
+  --cyan-dim: #0054d1;
+  --cyan-bg:  rgba(0,102,255,0.08);
+  --green:    #0a9b6a;
+  --green-dim:#0a7752;
+  --amber:    #b67910;
+  --red:      #c53f3f;
+  --text:     #0f172a;
+  --text-mid: #334155;
+  --text-dim: #64748b;
+  --nav-bg:   rgba(243,247,253,0.9);
+  --scanline: rgba(15,23,42,0.025);
+  --hero-grid:rgba(0,102,255,0.08);
+  --hero-glow:rgba(0,102,255,0.12);
+  --btn-primary-text: #ffffff;
+}
+
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    var(--scanline) 2px,
+    var(--scanline) 4px
+  );
+  pointer-events: none;
+  z-index: 9999;
+}
+
+nav {
+  position: fixed; top: 0; left: 0; right: 0;
+  z-index: 100;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 48px;
+  height: 60px;
+  background: var(--nav-bg);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border);
+}
+
+.nav-logo {
+  font-family: var(--mono);
+  font-size: 13px; font-weight: 500;
+  color: var(--cyan);
+  letter-spacing: 0.08em;
+}
+
+.nav-logo span { color: var(--text-mid); }
+
+.nav-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.nav-links { display: flex; gap: 2px; }
+
+.nav-links a {
+  padding: 6px 14px;
+  font-family: var(--mono);
+  font-size: 11px; font-weight: 400;
+  letter-spacing: 0.1em; text-transform: uppercase;
+  color: var(--text-mid); text-decoration: none;
+  border: 1px solid transparent;
+  transition: color 0.2s, border-color 0.2s;
+}
+
+.nav-links a:hover,
+.nav-links a:focus-visible {
+  color: var(--cyan);
+  border-color: var(--border2);
+  outline: none;
+}
+
+.theme-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--bg3);
+  border: 1px solid var(--border2);
+  color: var(--text-mid);
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 5px 8px;
+  cursor: pointer;
+  transition: border-color 0.2s, color 0.2s;
+}
+
+.theme-toggle:hover,
+.theme-toggle:focus-visible {
+  border-color: var(--cyan);
+  color: var(--cyan);
+  outline: none;
+}
+
+.toggle-track {
+  width: 34px;
+  height: 18px;
+  border: 1px solid var(--border2);
+  background: var(--bg2);
+  display: inline-flex;
+  align-items: center;
+  padding: 2px;
+}
+
+.toggle-thumb {
+  width: 12px;
+  height: 12px;
+  background: var(--cyan);
+  transition: transform 0.2s;
+}
+
+body.theme-light .toggle-thumb {
+  transform: translateX(16px);
+}
+
+.hero {
+  min-height: 100vh;
+  display: flex; flex-direction: column; justify-content: center;
+  padding: 100px 48px 80px;
+  position: relative;
+  overflow: hidden;
+}
+
+.hero::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(var(--hero-grid) 1px, transparent 1px),
+    linear-gradient(90deg, var(--hero-grid) 1px, transparent 1px);
+  background-size: 48px 48px;
+  pointer-events: none;
+}
+
+.hero-glow {
+  position: absolute;
+  width: 600px; height: 600px;
+  border-radius: 50%;
+  background: radial-gradient(circle, var(--hero-glow) 0%, transparent 70%);
+  top: -100px; right: -100px;
+  pointer-events: none;
+}
+
+.hero-inner { max-width: 900px; position: relative; z-index: 1; }
+
+.hero-status {
+  display: inline-flex; align-items: center; gap: 8px;
+  font-family: var(--mono);
+  font-size: 11px; font-weight: 400;
+  letter-spacing: 0.14em; text-transform: uppercase;
+  color: var(--green);
+  margin-bottom: 32px;
+}
+
+.status-dot {
+  width: 7px; height: 7px; border-radius: 50%;
+  background: var(--green);
+  animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.3; }
+}
+
+.hero h1 {
+  font-family: var(--display);
+  font-size: clamp(48px, 8vw, 96px);
+  font-weight: 800;
+  line-height: 0.96;
+  letter-spacing: 0.01em;
+  margin-bottom: 8px;
+}
+
+.hero h1 .name-first { color: var(--text); display: block; font-weight: 700; }
+.hero h1 .name-last {
+  font-weight: 800;
+  color: transparent;
+  -webkit-text-stroke: 1px var(--cyan);
+  display: block;
+}
+
+.hero-title {
+  font-family: var(--mono);
+  font-size: clamp(13px, 1.8vw, 16px);
+  color: var(--text-mid);
+  margin-bottom: 32px;
+  margin-top: 16px;
+}
+
+.hero-title .hl { color: var(--cyan); }
+
+.hero-bio {
+  font-size: 17px;
+  color: var(--text-mid);
+  max-width: 760px;
+  line-height: 1.75;
+  font-weight: 400;
+  margin-bottom: 48px;
+}
+
+.hero-bio strong { color: var(--text); font-weight: 600; }
+
+.section-intro {
+  max-width: 860px;
+  margin-top: -24px;
+  margin-bottom: 36px;
+  font-size: 15px;
+  color: var(--text-mid);
+  line-height: 1.8;
+}
+
+.hero-links { display: flex; gap: 12px; flex-wrap: wrap; }
+
+.btn {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 11px 22px;
+  font-family: var(--mono);
+  font-size: 12px; font-weight: 500;
+  letter-spacing: 0.08em; text-transform: uppercase;
+  text-decoration: none;
+  border: 1px solid;
+  transition: all 0.2s;
+  cursor: pointer;
+}
+
+.btn-primary {
+  background: var(--cyan); color: var(--btn-primary-text);
+  border-color: var(--cyan);
+}
+
+.btn-primary:hover,
+.btn-primary:focus-visible {
+  background: transparent;
+  color: var(--cyan);
+  outline: none;
+}
+
+.btn-outline {
+  background: transparent; color: var(--text-mid);
+  border-color: var(--border2);
+}
+
+.btn-outline:hover,
+.btn-outline:focus-visible {
+  border-color: var(--cyan);
+  color: var(--cyan);
+  outline: none;
+}
+
+.hero-stats {
+  display: flex; gap: 40px;
+  margin-top: 64px;
+  padding-top: 40px;
+  border-top: 1px solid var(--border);
+}
+
+.stat-val {
+  font-family: var(--mono);
+  font-size: 32px; font-weight: 700;
+  color: var(--cyan); line-height: 1;
+}
+
+.stat-label {
+  font-size: 12px; color: var(--text-dim);
+  margin-top: 4px; letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.section {
+  padding: 100px 48px;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.section-label {
+  font-family: var(--mono);
+  font-size: 11px; font-weight: 500;
+  letter-spacing: 0.2em; text-transform: uppercase;
+  color: var(--cyan); margin-bottom: 12px;
+  display: flex; align-items: center; gap: 10px;
+}
+
+.section-label::before {
+  content: '//';
+  opacity: 0.4;
+}
+
+.section-title {
+  font-size: clamp(28px, 4vw, 44px);
+  font-weight: 700; line-height: 1.1;
+  letter-spacing: -0.02em;
+  color: var(--text);
+  margin-bottom: 48px;
+}
+
+.skills-wrap { display: flex; flex-direction: column; gap: 20px; }
+
+.skill-row {
+  display: grid;
+  grid-template-columns: 220px 1fr 48px;
+  gap: 16px;
+  align-items: center;
+}
+
+.skill-name {
+  font-family: var(--mono);
+  font-size: 13px; color: var(--text-mid);
+}
+
+.skill-bar {
+  height: 3px;
+  background: var(--border);
+  position: relative;
+  overflow: hidden;
+}
+
+.skill-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--cyan), var(--green));
+  transform-origin: left;
+  animation: fillBar 1.2s ease-out forwards;
+  transform: scaleX(0);
+}
+
+@keyframes fillBar { to { transform: scaleX(1); } }
+
+.skill-pct {
+  font-family: var(--mono);
+  font-size: 11px; color: var(--text-dim);
+  text-align: right;
+}
+
+.tag-cloud {
+  display: flex; flex-wrap: wrap; gap: 8px;
+  margin-top: 40px;
+}
+
+.tag {
+  padding: 5px 12px;
+  font-family: var(--mono);
+  font-size: 11px; font-weight: 500;
+  letter-spacing: 0.08em;
+  color: var(--text-mid);
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  transition: color 0.2s, border-color 0.2s;
+}
+
+.tag:hover,
+.tag:focus-visible {
+  color: var(--cyan);
+  border-color: var(--cyan-dim);
+  outline: none;
+}
+
+.tag.highlight {
+  color: var(--cyan);
+  border-color: var(--cyan-dim);
+  background: var(--cyan-bg);
+}
+
+.skill-groups {
+  margin-top: 36px;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 12px;
+}
+
+.skill-group {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  padding: 20px;
+}
+
+.skill-group h3 {
+  font-size: 14px;
+  color: var(--cyan);
+  font-family: var(--mono);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin-bottom: 10px;
+}
+
+.skill-group p {
+  font-size: 13px;
+  line-height: 1.75;
+  color: var(--text-mid);
+}
+
+.timeline { position: relative; }
+
+.timeline::before {
+  content: '';
+  position: absolute;
+  left: 0; top: 0; bottom: 0;
+  width: 1px;
+  background: linear-gradient(to bottom, var(--cyan), transparent);
+}
+
+.tl-item {
+  padding: 0 0 52px 36px;
+  position: relative;
+  opacity: 0;
+  animation: fadeUp 0.5s ease forwards;
+}
+
+.tl-item:nth-child(1) { animation-delay: 0.1s; }
+.tl-item:nth-child(2) { animation-delay: 0.2s; }
+.tl-item:nth-child(3) { animation-delay: 0.3s; }
+.tl-item:nth-child(4) { animation-delay: 0.4s; }
+.tl-item:nth-child(5) { animation-delay: 0.5s; }
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.tl-dot {
+  position: absolute; left: -5px; top: 6px;
+  width: 11px; height: 11px; border-radius: 50%;
+  background: var(--cyan); border: 2px solid var(--bg);
+  box-shadow: 0 0 10px var(--cyan);
+}
+
+.tl-period {
+  font-family: var(--mono);
+  font-size: 11px; color: var(--text-dim);
+  letter-spacing: 0.1em; margin-bottom: 6px;
+}
+
+.tl-role {
+  font-size: 19px; font-weight: 700;
+  color: var(--text); margin-bottom: 2px;
+}
+
+.tl-company {
+  font-family: var(--mono);
+  font-size: 13px; color: var(--cyan);
+  margin-bottom: 16px;
+}
+
+.tl-bullets { list-style: none; }
+
+.tl-bullets li {
+  font-size: 14px; color: var(--text-mid);
+  line-height: 1.7; padding: 3px 0;
+  display: flex; gap: 10px;
+}
+
+.tl-bullets li::before {
+  content: '>';
+  color: var(--cyan); flex-shrink: 0;
+  margin-top: 1px;
+}
+
+.articles-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 16px;
+}
+
+.article-card {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  padding: 28px;
+  text-decoration: none;
+  display: block;
+  position: relative;
+  overflow: hidden;
+  transition: border-color 0.2s, transform 0.2s;
+}
+
+.article-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, var(--cyan), var(--green));
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.3s;
+}
+
+.article-card:hover,
+.article-card:focus-visible {
+  border-color: var(--border2);
+  transform: translateY(-2px);
+  outline: none;
+}
+
+.article-card:hover::before,
+.article-card:focus-visible::before {
+  transform: scaleX(1);
+}
+
+.article-tag {
+  font-family: var(--mono);
+  font-size: 10px; font-weight: 500;
+  letter-spacing: 0.16em; text-transform: uppercase;
+  color: var(--cyan); margin-bottom: 12px; display: block;
+}
+
+.article-title {
+  font-size: 16px; font-weight: 700;
+  color: var(--text); line-height: 1.35;
+  margin-bottom: 10px;
+}
+
+.article-desc {
+  font-size: 13px; color: var(--text-mid);
+  line-height: 1.65;
+  font-weight: 400;
+}
+
+.article-meta {
+  margin-top: 20px;
+  font-family: var(--mono);
+  font-size: 11px; color: var(--text-dim);
+  display: flex; align-items: center; justify-content: space-between;
+}
+
+.article-arrow { color: var(--cyan); font-size: 16px; }
+
+.medium-status {
+  margin-top: 20px;
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+}
+
+.credentials-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 12px;
+}
+
+.credential-card {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  padding: 22px;
+}
+
+.credential-head {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--cyan);
+  margin-bottom: 10px;
+}
+
+.credential-title {
+  font-size: 16px;
+  color: var(--text);
+  margin-bottom: 8px;
+  line-height: 1.4;
+}
+
+.credential-meta {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  color: var(--text-dim);
+  margin-bottom: 10px;
+}
+
+.credential-desc {
+  font-size: 13px;
+  color: var(--text-mid);
+  line-height: 1.75;
+}
+
+.activity-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 12px;
+}
+
+.activity-item {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  padding: 20px 22px;
+  display: flex; gap: 16px; align-items: flex-start;
+}
+
+.activity-icon {
+  width: 24px;
+  text-align: center;
+  font-family: var(--mono);
+  color: var(--cyan);
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.activity-name {
+  font-size: 14px; font-weight: 600;
+  color: var(--text); margin-bottom: 4px;
+}
+
+.activity-detail {
+  font-family: var(--mono);
+  font-size: 12px; color: var(--text-dim);
+  line-height: 1.5;
+}
+
+.contact-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 40px;
+  align-items: start;
+}
+
+.contact-intro {
+  font-size: 16px; color: var(--text-mid);
+  line-height: 1.8; margin-bottom: 32px;
+}
+
+.contact-links { display: flex; flex-direction: column; gap: 10px; }
+
+.contact-link {
+  display: flex; align-items: center; gap: 14px;
+  padding: 14px 18px;
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  text-decoration: none;
+  color: var(--text-mid);
+  font-family: var(--mono);
+  font-size: 13px;
+  transition: border-color 0.2s, color 0.2s;
+}
+
+.contact-link:hover,
+.contact-link:focus-visible {
+  border-color: var(--cyan);
+  color: var(--cyan);
+  outline: none;
+}
+
+.contact-link-icon { font-size: 16px; }
+
+.contact-link-label {
+  font-size: 10px; letter-spacing: 0.14em;
+  text-transform: uppercase; color: var(--text-dim);
+  display: block; margin-bottom: 2px;
+}
+
+.contact-link-val { color: inherit; }
+
+.terminal {
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  padding: 0;
+  overflow: hidden;
+}
+
+.terminal-bar {
+  display: flex; align-items: center; gap: 7px;
+  padding: 10px 16px;
+  background: var(--border);
+}
+
+.t-dot {
+  width: 10px; height: 10px; border-radius: 50%;
+}
+
+.t-dot.red { background: #ef4444; }
+.t-dot.amber { background: #f59e0b; }
+.t-dot.green { background: #22c55e; }
+
+.terminal-body {
+  padding: 24px;
+  font-family: var(--mono);
+  font-size: 13px;
+  line-height: 1.9;
+}
+
+.t-line { display: block; }
+.t-prompt { color: var(--cyan); }
+.t-cmd { color: var(--green); }
+.t-out { color: var(--text-mid); padding-left: 16px; display: block; }
+.t-out.dim { color: var(--text-dim); }
+
+.t-cursor {
+  display: inline-block;
+  width: 8px; height: 14px;
+  background: var(--cyan);
+  animation: blink 1s step-end infinite;
+  vertical-align: text-bottom;
+  margin-left: 2px;
+}
+
+@keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
+
+footer {
+  border-top: 1px solid var(--border);
+  padding: 32px 48px;
+  display: flex; align-items: center; justify-content: space-between;
+  font-family: var(--mono);
+  font-size: 11px; color: var(--text-dim);
+}
+
+footer a { color: var(--cyan); text-decoration: none; }
+
+.full-divider {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--border), transparent);
+  margin: 0 48px;
+}
+
+@media (max-width: 768px) {
+  nav { padding: 0 20px; }
+  .nav-links { display: none; }
+  .theme-toggle { padding: 4px 7px; }
+  .toggle-text { display: none; }
+  .hero, .section { padding-left: 20px; padding-right: 20px; }
+  .hero-stats { gap: 24px; flex-wrap: wrap; }
+  .skill-row { grid-template-columns: 160px 1fr 40px; }
+  .section-intro { margin-top: -18px; }
+  .contact-grid { grid-template-columns: 1fr; }
+  footer { flex-direction: column; gap: 8px; text-align: center; }
+  .full-divider { margin: 0 20px; }
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-logo">nd<span>@security</span> ~$</div>
+  <div class="nav-actions">
+    <div class="nav-links">
+      <a href="#about">About</a>
+      <a href="#experience">Experience</a>
+      <a href="#skills">Skills</a>
+      <a href="#writing">Writing</a>
+      <a href="#activities">Focus</a>
+      <a href="#credentials">Credentials</a>
+      <a href="#contact">Contact</a>
+    </div>
+    <button class="theme-toggle" id="theme-toggle" type="button" aria-label="Toggle light and dark theme" aria-pressed="false">
+      <span class="toggle-track" aria-hidden="true"><span class="toggle-thumb"></span></span>
+      <span class="toggle-text" id="toggle-text">Dark</span>
+    </button>
+  </div>
+</nav>
+
+<section class="hero" id="about">
+  <div class="hero-glow"></div>
+  <div class="hero-inner">
+
+    <div class="hero-status">
+      <div class="status-dot"></div>
+      Available for senior roles and consulting
+    </div>
+
+    <h1>
+      <span class="name-first">Noussayr</span>
+      <span class="name-last">Derbel</span>
+    </h1>
+
+    <p class="hero-title">
+      <span class="hl">Senior Cybersecurity Engineer</span> / DFIR / Threat Detection / Security Leadership
+    </p>
+
+    <p class="hero-bio">
+      Cybersecurity engineer with 5+ years of progressive experience across
+      <strong>SOC operations</strong>, <strong>consulting</strong>, and
+      <strong>enterprise security engineering</strong>. Specialized in DFIR, threat detection,
+      malware analysis, and adversary-aligned detection development.
+      Proven ability to lead incident response under pressure, translate complex technical findings
+      into actionable business guidance, and elevate team capability through mentoring and structured knowledge sharing.
+    </p>
+
+    <div class="hero-links">
+      <a class="btn btn-primary" href="#contact">Get in Touch</a>
+      <a class="btn btn-outline" href="#experience">View Experience Fields</a>
+      <a class="btn btn-outline" href="mailto:noussayr.derbel@gmail.com">Email</a>
+    </div>
+
+    <div class="hero-stats">
+      <div>
+        <div class="stat-val">5+</div>
+        <div class="stat-label">Years Experience</div>
+      </div>
+      <div>
+        <div class="stat-val">4</div>
+        <div class="stat-label">Core Domains</div>
+      </div>
+      <div>
+        <div class="stat-val">3</div>
+        <div class="stat-label">Working Languages</div>
+      </div>
+      <div>
+        <div class="stat-val">100+</div>
+        <div class="stat-label">Investigations Supported</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="full-divider"></div>
+
+<div class="section" id="skills">
+  <div class="section-label">Technical Profile</div>
+  <div class="section-title">Skills and Expertise</div>
+  <p class="section-intro">
+    Core strengths from my resume grouped by detection and response, security engineering, frameworks, platform operations, and leadership execution.
+  </p>
+
+  <div class="skills-wrap">
+    <div class="skill-row">
+      <div class="skill-name">Incident Response and DFIR</div>
+      <div class="skill-bar"><div class="skill-fill" style="width:95%"></div></div>
+      <div class="skill-pct">95</div>
+    </div>
+    <div class="skill-row">
+      <div class="skill-name">Threat Detection Engineering</div>
+      <div class="skill-bar"><div class="skill-fill" style="width:92%;animation-delay:0.1s"></div></div>
+      <div class="skill-pct">92</div>
+    </div>
+    <div class="skill-row">
+      <div class="skill-name">Threat Intelligence and Hunting</div>
+      <div class="skill-bar"><div class="skill-fill" style="width:90%;animation-delay:0.15s"></div></div>
+      <div class="skill-pct">90</div>
+    </div>
+    <div class="skill-row">
+      <div class="skill-name">Security Engineering</div>
+      <div class="skill-bar"><div class="skill-fill" style="width:88%;animation-delay:0.2s"></div></div>
+      <div class="skill-pct">88</div>
+    </div>
+    <div class="skill-row">
+      <div class="skill-name">SOC Operations Design</div>
+      <div class="skill-bar"><div class="skill-fill" style="width:86%;animation-delay:0.25s"></div></div>
+      <div class="skill-pct">86</div>
+    </div>
+    <div class="skill-row">
+      <div class="skill-name">Malware Analysis</div>
+      <div class="skill-bar"><div class="skill-fill" style="width:86%;animation-delay:0.3s"></div></div>
+      <div class="skill-pct">86</div>
+    </div>
+    <div class="skill-row">
+      <div class="skill-name">Stakeholder Communication</div>
+      <div class="skill-bar"><div class="skill-fill" style="width:90%;animation-delay:0.35s"></div></div>
+      <div class="skill-pct">90</div>
+    </div>
+    <div class="skill-row">
+      <div class="skill-name">Security Mentoring and Teaching</div>
+      <div class="skill-bar"><div class="skill-fill" style="width:89%;animation-delay:0.4s"></div></div>
+      <div class="skill-pct">89</div>
+    </div>
+  </div>
+
+  <div class="tag-cloud">
+    <div class="tag highlight">DFIR</div>
+    <div class="tag highlight">Detection Rules</div>
+    <div class="tag highlight">Threat Hunting</div>
+    <div class="tag highlight">Playbooks</div>
+    <div class="tag">CrowdStrike</div>
+    <div class="tag">Cortex XDR</div>
+    <div class="tag">Cortex XSOAR</div>
+    <div class="tag">Microsoft Defender</div>
+    <div class="tag">Splunk</div>
+    <div class="tag">QRadar</div>
+    <div class="tag">Zscaler</div>
+    <div class="tag">Wireshark</div>
+    <div class="tag">Sysinternals</div>
+    <div class="tag">CyberChef</div>
+    <div class="tag">VirusTotal</div>
+    <div class="tag highlight">MITRE ATT&amp;CK</div>
+    <div class="tag">MITRE D3FEND</div>
+    <div class="tag">Cyber Kill Chain</div>
+    <div class="tag">ISO/IEC 27001</div>
+    <div class="tag">Identity Security</div>
+    <div class="tag">Network Detection</div>
+    <div class="tag">Incident Coordination</div>
+    <div class="tag">Process Standardization</div>
+    <div class="tag">Vendor Management</div>
+    <div class="tag">Risk Communication</div>
+    <div class="tag">Workshop Design</div>
+  </div>
+
+  <div class="skill-groups">
+    <div class="skill-group">
+      <h3>Detection and Response</h3>
+      <p>DFIR, threat hunting, malware analysis, incident coordination, and detection engineering focused on rapid containment and structured investigation quality.</p>
+    </div>
+    <div class="skill-group">
+      <h3>Security Engineering</h3>
+      <p>Identity security architecture, SOC engineering, network detection, enterprise control deployment, and practical automation of response workflows.</p>
+    </div>
+    <div class="skill-group">
+      <h3>Framework Alignment</h3>
+      <p>MITRE ATT&amp;CK, MITRE D3FEND, ISO/IEC 27001, and Cyber Kill Chain mapped to real detection and response operating models.</p>
+    </div>
+    <div class="skill-group">
+      <h3>Leadership Delivery</h3>
+      <p>Stakeholder communication, incident leadership, team mentoring, workshop design, process standardization, and decision support for deployment priorities.</p>
+    </div>
+  </div>
+</div>
+
+<div class="full-divider"></div>
+
+<div class="section" id="experience">
+  <div class="section-label">Career</div>
+  <div class="section-title">Experience by Field</div>
+  <p class="section-intro">
+    Resume-based experience highlights focused on responsibilities and outcomes by field, independent of organization names.
+  </p>
+
+  <div class="timeline">
+
+    <div class="tl-item">
+      <div class="tl-dot"></div>
+      <div class="tl-period">Field 01</div>
+      <div class="tl-role">Incident Response and Digital Forensics</div>
+      <div class="tl-company">Containment, root cause analysis, and recovery execution</div>
+      <ul class="tl-bullets">
+        <li>Led incident response during advanced targeted attacks and on-call escalations, driving fast containment and aligned remediation.</li>
+        <li>Structured complex investigations by correlating endpoint, identity, and network telemetry to validate hypotheses and reduce triage ambiguity.</li>
+        <li>Standardized evidence collection and case documentation practices, improving handover quality and investigation traceability.</li>
+        <li>Produced decision-ready findings for both technical teams and business stakeholders with clear risk framing and next actions.</li>
+        <li>Performed endpoint and server investigations with containment and hardening recommendations calibrated to operational constraints.</li>
+      </ul>
+    </div>
+
+    <div class="tl-item">
+      <div class="tl-dot"></div>
+      <div class="tl-period">Field 02</div>
+      <div class="tl-role">Threat Detection Engineering</div>
+      <div class="tl-company">Behavior-driven detection coverage and tuning</div>
+      <ul class="tl-bullets">
+        <li>Converted adversary behaviors into MITRE ATT&amp;CK-aligned detection requirements and high-value use-cases.</li>
+        <li>Aligned log onboarding and correlation efforts with prioritized detection scenarios to improve actionable alerting.</li>
+        <li>Reviewed recurring alert patterns and tuned rules to reduce noise while maintaining security coverage.</li>
+        <li>Designed detection validation routines using repeatable scenarios, analyst feedback, and continuous coverage refinement.</li>
+        <li>Improved SOC signal quality by balancing behavioral fidelity, response practicality, and analyst workload efficiency.</li>
+      </ul>
+    </div>
+
+    <div class="tl-item">
+      <div class="tl-dot"></div>
+      <div class="tl-period">Field 03</div>
+      <div class="tl-role">Security Engineering and Architecture</div>
+      <div class="tl-company">Control design across identity, endpoint, and network layers</div>
+      <ul class="tl-bullets">
+        <li>Architected enterprise identity security initiatives and network detection programs to strengthen security posture at scale.</li>
+        <li>Owned end-to-end vendor evaluation cycles: requirements definition, solution assessment, and strategic recommendation delivery.</li>
+        <li>Designed and implemented process standardization and automation across detection and response workflows to reduce manual effort.</li>
+        <li>Integrated monitoring, enrichment, escalation, and reporting practices to improve consistency across build and run teams.</li>
+        <li>Supported control implementation decisions with practical trade-off analysis, risk context, and operational feasibility guidance.</li>
+      </ul>
+    </div>
+
+    <div class="tl-item">
+      <div class="tl-dot"></div>
+      <div class="tl-period">Field 04</div>
+      <div class="tl-role">Consulting, Communication, and Leadership</div>
+      <div class="tl-company">Decision support, mentoring, and enablement</div>
+      <ul class="tl-bullets">
+        <li>Managed incident triage and escalation in high-pressure environments with clear stakeholder communication and aligned expectations.</li>
+        <li>Translated technical findings into risk-oriented guidance for IT, SOC, and management audiences to support business-level decisions.</li>
+        <li>Designed and delivered workshops on DFIR, cyber threat intelligence, and malware analysis for analyst and engineering teams.</li>
+        <li>Built practical training labs for network protection and cybersecurity audit topics using real attack-chain examples.</li>
+        <li>Mentored analysts, interns, and students through project reviews, documentation quality improvements, and reproducible methodologies.</li>
+      </ul>
+    </div>
+
+  </div>
+</div>
+
+<div class="full-divider"></div>
+
+<div class="section" id="writing">
+  <div class="section-label">Content</div>
+  <div class="section-title">Medium Articles</div>
+  <p class="section-intro">
+    Live integration from my Medium feed. Read recent articles on cybersecurity, operations, and practical security thinking.
+  </p>
+
+  <div class="articles-grid" id="medium-feed" aria-live="polite">
+    <article class="article-card">
+      <span class="article-tag">Loading</span>
+      <div class="article-title">Fetching latest Medium posts...</div>
+      <div class="article-desc">This section automatically pulls article titles, summaries, and publish dates from the Medium RSS feed.</div>
+      <div class="article-meta">
+        <span>medium.com/@noussayr.derbel</span>
+        <span class="article-arrow">-></span>
+      </div>
+    </article>
+  </div>
+
+  <p class="medium-status" id="medium-status">Loading latest Medium articles...</p>
+
+  <div class="hero-links">
+    <a class="btn btn-outline" href="https://medium.com/@noussayr.derbel" target="_blank" rel="noopener noreferrer">Read All Articles</a>
+  </div>
+</div>
+
+<div class="full-divider"></div>
+
+<div class="section" id="activities">
+  <div class="section-label">Beyond Delivery</div>
+  <div class="section-title">Current Focus Areas</div>
+
+  <div class="activity-grid">
+    <div class="activity-item">
+      <div class="activity-icon">[1]</div>
+      <div>
+        <div class="activity-name">Advanced Threat Hunting</div>
+        <div class="activity-detail">Continuous development of behavior-based hunt strategies and investigation hypotheses.</div>
+      </div>
+    </div>
+    <div class="activity-item">
+      <div class="activity-icon">[2]</div>
+      <div>
+        <div class="activity-name">Detection Quality Engineering</div>
+        <div class="activity-detail">Improving signal quality and coverage confidence using iterative tuning and scenario testing.</div>
+      </div>
+    </div>
+    <div class="activity-item">
+      <div class="activity-icon">[3]</div>
+      <div>
+        <div class="activity-name">Incident Readiness Programs</div>
+        <div class="activity-detail">Designing repeatable runbooks and communication flows for faster cross-team response.</div>
+      </div>
+    </div>
+    <div class="activity-item">
+      <div class="activity-icon">[4]</div>
+      <div>
+        <div class="activity-name">Security Mentoring</div>
+        <div class="activity-detail">Coaching analysts and engineers through practical case reviews and scenario exercises.</div>
+      </div>
+    </div>
+    <div class="activity-item">
+      <div class="activity-icon">[5]</div>
+      <div>
+        <div class="activity-name">Technical Research</div>
+        <div class="activity-detail">Ongoing study of adversary tradecraft, investigation tooling, and defensive architecture patterns.</div>
+      </div>
+    </div>
+    <div class="activity-item">
+      <div class="activity-icon">[6]</div>
+      <div>
+        <div class="activity-name">Operational Documentation</div>
+        <div class="activity-detail">Producing actionable documentation that helps teams execute consistently under pressure.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="full-divider"></div>
+
+<div class="section" id="credentials">
+  <div class="section-label">Background</div>
+  <div class="section-title">Education, Certifications, Languages</div>
+  <p class="section-intro">
+    Formal education and continuous learning details from my resume, combined with working language coverage for international collaboration.
+  </p>
+
+  <div class="credentials-grid">
+    <div class="credential-card">
+      <div class="credential-head">Education</div>
+      <div class="credential-title">Bachelor's Degree in Information and Communication Technologies</div>
+      <div class="credential-meta">Oct 2017 - Jul 2020</div>
+      <div class="credential-desc">
+        Major in Network Security. Foundation in network defense, system security fundamentals, and practical cybersecurity operations.
+      </div>
+    </div>
+
+    <div class="credential-card">
+      <div class="credential-head">Certification</div>
+      <div class="credential-title">Advanced Malware Analysis</div>
+      <div class="credential-meta">Jan 2025</div>
+      <div class="credential-desc">
+        Advanced malware behavior analysis, execution flow understanding, and structured investigation techniques.
+      </div>
+    </div>
+
+    <div class="credential-card">
+      <div class="credential-head">Certification</div>
+      <div class="credential-title">Advanced Cyber Threat Intelligence</div>
+      <div class="credential-meta">Dec 2024</div>
+      <div class="credential-desc">
+        Adversary-focused intelligence interpretation, context-driven prioritization, and operationally relevant threat analysis.
+      </div>
+    </div>
+
+    <div class="credential-card">
+      <div class="credential-head">Languages</div>
+      <div class="credential-title">Arabic (Native) | English (Professional) | French (Professional)</div>
+      <div class="credential-meta">Multilingual Collaboration</div>
+      <div class="credential-desc">
+        Confident communication across technical teams, leadership stakeholders, and cross-cultural project environments.
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="full-divider"></div>
+
+<div class="section" id="contact">
+  <div class="section-label">Contact</div>
+  <div class="section-title">Get in Touch</div>
+
+  <div class="contact-grid">
+    <div>
+      <p class="contact-intro">
+        Open to senior cybersecurity engineering roles, consulting engagements,
+        and teaching opportunities. Based in Tallinn, Estonia.
+      </p>
+      <div class="contact-links">
+        <a class="contact-link" href="mailto:noussayr.derbel@gmail.com">
+          <span class="contact-link-icon">@</span>
+          <div>
+            <span class="contact-link-label">Email</span>
+            <span class="contact-link-val">noussayr.derbel@gmail.com</span>
+          </div>
+        </a>
+        <a class="contact-link" href="tel:+37251966024">
+          <span class="contact-link-icon">tel</span>
+          <div>
+            <span class="contact-link-label">Phone</span>
+            <span class="contact-link-val">+372 5196 6024</span>
+          </div>
+        </a>
+        <a class="contact-link" href="https://medium.com/@noussayr.derbel" target="_blank" rel="noopener noreferrer">
+          <span class="contact-link-icon">M</span>
+          <div>
+            <span class="contact-link-label">Medium</span>
+            <span class="contact-link-val">@noussayr.derbel</span>
+          </div>
+        </a>
+        <a class="contact-link" href="https://www.linkedin.com/in/noussayr-derbel-29b182174/" target="_blank" rel="noopener noreferrer">
+          <span class="contact-link-icon">in</span>
+          <div>
+            <span class="contact-link-label">LinkedIn</span>
+            <span class="contact-link-val">Professional profile</span>
+          </div>
+        </a>
+      </div>
+    </div>
+
+    <div class="terminal">
+      <div class="terminal-bar">
+        <div class="t-dot red"></div>
+        <div class="t-dot amber"></div>
+        <div class="t-dot green"></div>
+      </div>
+      <div class="terminal-body">
+        <span class="t-line"><span class="t-prompt">noussayr@security</span> ~$ <span class="t-cmd">whoami</span></span>
+        <span class="t-out">Senior Cybersecurity Engineer</span>
+        <span class="t-out">DFIR / Detection / Security Leadership</span>
+        <br>
+        <span class="t-line"><span class="t-prompt">noussayr@security</span> ~$ <span class="t-cmd">cat location.txt</span></span>
+        <span class="t-out">Tallinn, Estonia</span>
+        <span class="t-out dim">Open to remote and relocation options</span>
+        <br>
+        <span class="t-line"><span class="t-prompt">noussayr@security</span> ~$ <span class="t-cmd">cat languages.txt</span></span>
+        <span class="t-out">Arabic</span>
+        <span class="t-out">English</span>
+        <span class="t-out">French</span>
+        <br>
+        <span class="t-line"><span class="t-prompt">noussayr@security</span> ~$ <span class="t-cmd">cat status.txt</span></span>
+        <span class="t-out" style="color:var(--green)">[open] Available for opportunities</span>
+        <br>
+        <span class="t-line"><span class="t-prompt">noussayr@security</span> ~$ <span class="t-cursor"></span></span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <span>&copy; <span id="year"></span> Noussayr Derbel - Cybersecurity Engineer - Tallinn, Estonia</span>
+  <span><a href="#about">Back to top</a></span>
+</footer>
+
+<script>
+  document.getElementById('year').textContent = String(new Date().getFullYear());
+
+  (function () {
+    var storageKey = 'portfolio-theme';
+    var body = document.body;
+    var toggle = document.getElementById('theme-toggle');
+    var toggleText = document.getElementById('toggle-text');
+
+    function applyTheme(theme, persist) {
+      var isLight = theme === 'light';
+      body.classList.toggle('theme-light', isLight);
+      toggle.setAttribute('aria-pressed', String(isLight));
+      toggleText.textContent = isLight ? 'Light' : 'Dark';
+      if (persist) {
+        try {
+          localStorage.setItem(storageKey, theme);
+        } catch (error) {
+          /* Ignore storage restrictions */
+        }
+      }
+    }
+
+    var savedTheme = null;
+    try {
+      savedTheme = localStorage.getItem(storageKey);
+    } catch (error) {
+      savedTheme = null;
+    }
+
+    var prefersLight = window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches;
+    var initialTheme = savedTheme || (prefersLight ? 'light' : 'dark');
+    applyTheme(initialTheme, false);
+
+    toggle.addEventListener('click', function () {
+      var nextTheme = body.classList.contains('theme-light') ? 'dark' : 'light';
+      applyTheme(nextTheme, true);
+    });
+  })();
+
+  (function () {
+    var mediumFeedEl = document.getElementById('medium-feed');
+    var mediumStatusEl = document.getElementById('medium-status');
+    if (!mediumFeedEl || !mediumStatusEl) {
+      return;
+    }
+
+    var mediumUsername = 'noussayr.derbel';
+    var postsLimit = 6;
+    var feedUrl = 'https://medium.com/feed/@' + mediumUsername;
+    var apiUrl = 'https://api.rss2json.com/v1/api.json?rss_url=' + encodeURIComponent(feedUrl);
+
+    function escapeHtml(text) {
+      return String(text || '')
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/\"/g, '&quot;')
+        .replace(/'/g, '&#39;');
+    }
+
+    function stripHtml(html) {
+      var tmp = document.createElement('div');
+      tmp.innerHTML = String(html || '');
+      return (tmp.textContent || tmp.innerText || '').replace(/\s+/g, ' ').trim();
+    }
+
+    function formatDate(dateValue) {
+      var date = new Date(dateValue);
+      if (Number.isNaN(date.getTime())) {
+        return 'Recent article';
+      }
+      return date.toLocaleDateString('en-GB', {
+        year: 'numeric',
+        month: 'short',
+        day: '2-digit'
+      });
+    }
+
+    function renderPosts(items) {
+      mediumFeedEl.innerHTML = items.map(function (item) {
+        var title = escapeHtml(item.title || 'Untitled article');
+        var tag = escapeHtml((item.categories && item.categories[0]) || 'medium');
+        var dateText = escapeHtml(formatDate(item.pubDate));
+        var cleanExcerpt = stripHtml(item.description || item.content || '');
+        var excerpt = escapeHtml(cleanExcerpt.slice(0, 180) + (cleanExcerpt.length > 180 ? '...' : ''));
+        var url = escapeHtml(item.link || ('https://medium.com/@' + mediumUsername));
+
+        return (
+          '<a class=\"article-card\" href=\"' + url + '\" target=\"_blank\" rel=\"noopener noreferrer\">' +
+            '<span class=\"article-tag\">' + tag + '</span>' +
+            '<div class=\"article-title\">' + title + '</div>' +
+            '<div class=\"article-desc\">' + excerpt + '</div>' +
+            '<div class=\"article-meta\"><span>' + dateText + '</span><span class=\"article-arrow\">-></span></div>' +
+          '</a>'
+        );
+      }).join('');
+    }
+
+    fetch(apiUrl)
+      .then(function (response) {
+        if (!response.ok) {
+          throw new Error('Failed to load Medium feed');
+        }
+        return response.json();
+      })
+      .then(function (data) {
+        if (!data || data.status !== 'ok' || !Array.isArray(data.items) || data.items.length === 0) {
+          throw new Error('No articles returned');
+        }
+        var posts = data.items.slice(0, postsLimit);
+        renderPosts(posts);
+        mediumStatusEl.textContent = 'Latest ' + posts.length + ' Medium articles loaded.';
+      })
+      .catch(function () {
+        mediumFeedEl.innerHTML = '';
+        mediumStatusEl.textContent = 'Feed temporarily unavailable. Use the Read All Articles button to open Medium directly.';
+      });
+  })();
+</script>
+
+</body>
+</html>
