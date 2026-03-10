@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Noussayr Derbel - Cybersecurity Engineer</title>
-<meta name="description" content="Portfolio of Noussayr Derbel, focused on DFIR, detection engineering, threat intelligence, and security architecture.">
+<meta id="meta-description" name="description" content="Portfolio of Noussayr Derbel, focused on DFIR, detection engineering, threat intelligence, and security architecture.">
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;700&family=Orbitron:wght@600;700;800&family=Syne:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
 :root {
@@ -28,13 +28,14 @@
   --hero-grid:rgba(0,212,255,0.03);
   --hero-glow:rgba(0,212,255,0.08);
   --btn-primary-text: #0a0c10;
+  --language-page-gap: 72px;
   --mono:     'JetBrains Mono', monospace;
   --sans:     'Syne', sans-serif;
   --display:  'Orbitron', sans-serif;
 }
 
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-html { scroll-behavior: smooth; }
+html { scroll-behavior: smooth; overflow-x: hidden; }
 
 body {
   background: var(--bg);
@@ -127,7 +128,7 @@ nav {
   outline: none;
 }
 
-.theme-toggle {
+.utility-toggle {
   display: inline-flex;
   align-items: center;
   gap: 8px;
@@ -143,11 +144,34 @@ nav {
   transition: border-color 0.2s, color 0.2s;
 }
 
-.theme-toggle:hover,
-.theme-toggle:focus-visible {
+.utility-toggle:hover,
+.utility-toggle:focus-visible {
   border-color: var(--cyan);
   color: var(--cyan);
   outline: none;
+}
+
+.language-toggle {
+  min-width: 62px;
+  justify-content: center;
+}
+
+.theme-toggle {
+  min-width: 92px;
+  justify-content: center;
+}
+
+.language-code {
+  color: var(--text-dim);
+  transition: color 0.2s;
+}
+
+.language-code.is-active {
+  color: var(--cyan);
+}
+
+.language-divider {
+  color: var(--text-dim);
 }
 
 .toggle-track {
@@ -562,6 +586,46 @@ body.theme-light .toggle-thumb {
   will-change: height, opacity;
 }
 
+.page-content {
+  position: relative;
+  transition:
+    transform 500ms cubic-bezier(0.22, 1, 0.36, 1),
+    opacity 500ms ease;
+  will-change: transform;
+}
+
+body.is-language-transitioning .page-content {
+  pointer-events: none;
+}
+
+body.lang-direction-left .page-content.is-exiting {
+  opacity: 1;
+  transform: translate3d(calc(-100vw - var(--language-page-gap)), 0, 0);
+}
+
+body.lang-direction-left .page-content.is-entering {
+  opacity: 1;
+  transform: translate3d(calc(100vw + var(--language-page-gap)), 0, 0);
+}
+
+body.lang-direction-right .page-content.is-exiting {
+  opacity: 1;
+  transform: translate3d(calc(100vw + var(--language-page-gap)), 0, 0);
+}
+
+body.lang-direction-right .page-content.is-entering {
+  opacity: 1;
+  transform: translate3d(calc(-100vw - var(--language-page-gap)), 0, 0);
+}
+
+.page-content.is-transition-reset {
+  transition: none;
+}
+
+.language-sweep {
+  display: none;
+}
+
 .accordion-item[open] .accordion-body,
 .accordion-item.is-open .accordion-body {
   border-top-color: var(--border);
@@ -906,7 +970,7 @@ footer a { color: var(--cyan); text-decoration: none; }
 @media (max-width: 768px) {
   nav { padding: 0 20px; }
   .nav-links { display: none; }
-  .theme-toggle { padding: 4px 7px; }
+  .utility-toggle { padding: 4px 7px; }
   .toggle-text { display: none; }
   .hero, .section { padding-left: 20px; padding-right: 20px; }
   .hero-stats { gap: 24px; flex-wrap: wrap; }
@@ -918,6 +982,17 @@ footer a { color: var(--cyan); text-decoration: none; }
   footer { flex-direction: column; gap: 8px; text-align: center; }
   .full-divider { margin: 0 20px; }
 }
+
+@media (prefers-reduced-motion: reduce) {
+  .page-content,
+  .page-content.is-transition-reset {
+    transition: none;
+  }
+
+  .language-sweep {
+    display: none;
+  }
+}
 </style>
 </head>
 <body>
@@ -926,20 +1001,28 @@ footer a { color: var(--cyan); text-decoration: none; }
   <div class="nav-logo">nd<span>@security</span> ~$</div>
   <div class="nav-actions">
     <div class="nav-links">
-      <a href="#about">About</a>
-      <a href="#core-skills">Core Skills</a>
-      <a href="#skills">Skills</a>
-      <a href="#writing">Writing</a>
-      <a href="#activities">Focus</a>
-      <a href="#credentials">Credentials</a>
-      <a href="#contact">Contact</a>
+      <a href="#about" data-i18n="navAbout">About</a>
+      <a href="#skills" data-i18n="navSkills">Expertise</a>
+      <a href="#core-skills" data-i18n="navCoreSkills">Capabilities</a>
+      <a href="#writing" data-i18n="navWriting">Writing</a>
+      <a href="#activities" data-i18n="navFocus">Focus</a>
+      <a href="#credentials" data-i18n="navCredentials">Credentials</a>
+      <a href="#contact" data-i18n="navContact">Contact</a>
     </div>
-    <button class="theme-toggle" id="theme-toggle" type="button" aria-label="Toggle light and dark theme" aria-pressed="false">
+    <button class="utility-toggle language-toggle" id="language-toggle" type="button" aria-label="Switch language to French">
+      <span class="language-code is-active" data-lang-indicator="en">EN</span>
+      <span class="language-divider" aria-hidden="true">/</span>
+      <span class="language-code" data-lang-indicator="fr">FR</span>
+    </button>
+    <button class="utility-toggle theme-toggle" id="theme-toggle" type="button" aria-label="Toggle light and dark theme" aria-pressed="false">
       <span class="toggle-track" aria-hidden="true"><span class="toggle-thumb"></span></span>
       <span class="toggle-text" id="toggle-text">Dark</span>
     </button>
   </div>
 </nav>
+
+<div class="language-sweep" aria-hidden="true"></div>
+<div class="page-content" id="page-content">
 
 <section class="hero" id="about">
   <div class="hero-glow"></div>
@@ -947,7 +1030,7 @@ footer a { color: var(--cyan); text-decoration: none; }
 
     <div class="hero-status">
       <div class="status-dot"></div>
-      Available for senior roles and consulting
+      <span data-i18n="heroStatus">Available for senior roles and consulting</span>
     </div>
 
     <h1>
@@ -956,10 +1039,10 @@ footer a { color: var(--cyan); text-decoration: none; }
     </h1>
 
     <p class="hero-title">
-      <span class="hl">Senior Cybersecurity Engineer</span>
+      <span class="hl" data-i18n="heroTitle">Senior Cybersecurity Engineer</span>
     </p>
 
-    <p class="hero-bio">
+    <p class="hero-bio" data-i18n="heroBio" data-i18n-html="true">
       Hands-on cybersecurity engineer with 5+ years of experience across
       <strong>SOC operations</strong>, <strong>consulting</strong>, and
       <strong>enterprise security engineering</strong>. I enjoy experimenting with new methodologies and tools,
@@ -969,27 +1052,27 @@ footer a { color: var(--cyan); text-decoration: none; }
     </p>
 
     <div class="hero-links">
-      <a class="btn btn-primary" href="#contact">Get in Touch</a>
-      <a class="btn btn-outline" href="#core-skills">View Core Skills</a>
-      <a class="btn btn-outline" href="mailto:noussayr.derbel@gmail.com">Email</a>
+      <a class="btn btn-primary" href="#contact" data-i18n="heroBtnContact">Get in Touch</a>
+      <a class="btn btn-outline" href="#core-skills" data-i18n="heroBtnCoreSkills">View Capabilities</a>
+      <a class="btn btn-outline" href="mailto:noussayr.derbel@gmail.com" data-i18n="heroBtnEmail">Email</a>
     </div>
 
     <div class="hero-stats">
       <div>
         <div class="stat-val">5+</div>
-        <div class="stat-label">Years Experience</div>
+        <div class="stat-label" data-i18n="statYears">Years Experience</div>
       </div>
       <div>
         <div class="stat-val">6</div>
-        <div class="stat-label">Core Skill Areas</div>
+        <div class="stat-label" data-i18n="statSkillAreas">Expertise Areas</div>
       </div>
       <div>
         <div class="stat-val">3</div>
-        <div class="stat-label">Working Languages</div>
+        <div class="stat-label" data-i18n="statLanguages">Working Languages</div>
       </div>
       <div>
         <div class="stat-val">40+</div>
-        <div class="stat-label">Frameworks / Tools</div>
+        <div class="stat-label" data-i18n="statTools">Frameworks / Tools</div>
       </div>
     </div>
   </div>
@@ -998,60 +1081,60 @@ footer a { color: var(--cyan); text-decoration: none; }
 <div class="full-divider"></div>
 
 <div class="section" id="skills">
-  <div class="section-label">Technical Profile</div>
-  <div class="section-title">Skills and Expertise</div>
-  <p class="section-intro">
-    Technical strengths grouped into the security areas I work in most often, from incident response and detection engineering to architecture, communication, and mentoring.
+  <div class="section-label" data-i18n="skillsLabel">Expertise</div>
+  <div class="section-title" data-i18n="skillsTitle">Areas of Expertise</div>
+  <p class="section-intro" data-i18n="skillsIntro">
+    A high-level view of the security domains I work in most often, from incident response and detection engineering to architecture, communication, and mentoring.
   </p>
 
   <div class="skills-wrap">
     <div class="skill-row">
-      <div class="skill-name">Incident Response and DFIR</div>
+      <div class="skill-name" data-i18n="skillIncidentResponse">Incident Response and DFIR</div>
       <div class="skill-bar"><div class="skill-fill" style="width:95%"></div></div>
       <div class="skill-pct">95</div>
     </div>
     <div class="skill-row">
-      <div class="skill-name">Threat Detection Engineering</div>
+      <div class="skill-name" data-i18n="skillDetectionEngineering">Threat Detection Engineering</div>
       <div class="skill-bar"><div class="skill-fill" style="width:93%;animation-delay:0.1s"></div></div>
       <div class="skill-pct">93</div>
     </div>
     <div class="skill-row">
-      <div class="skill-name">Threat Intelligence and Hunting</div>
+      <div class="skill-name" data-i18n="skillThreatIntel">Threat Intelligence and Hunting</div>
       <div class="skill-bar"><div class="skill-fill" style="width:91%;animation-delay:0.15s"></div></div>
       <div class="skill-pct">91</div>
     </div>
     <div class="skill-row">
-      <div class="skill-name">SIEM and Telemetry Engineering</div>
+      <div class="skill-name" data-i18n="skillSiemTelemetry">SIEM and Telemetry Engineering</div>
       <div class="skill-bar"><div class="skill-fill" style="width:90%;animation-delay:0.2s"></div></div>
       <div class="skill-pct">90</div>
     </div>
     <div class="skill-row">
-      <div class="skill-name">Malware Analysis</div>
+      <div class="skill-name" data-i18n="skillMalwareAnalysis">Malware Analysis</div>
       <div class="skill-bar"><div class="skill-fill" style="width:89%;animation-delay:0.25s"></div></div>
       <div class="skill-pct">89</div>
     </div>
     <div class="skill-row">
-      <div class="skill-name">Security Architecture and Design</div>
+      <div class="skill-name" data-i18n="skillArchitectureDesign">Security Architecture and Design</div>
       <div class="skill-bar"><div class="skill-fill" style="width:88%;animation-delay:0.3s"></div></div>
       <div class="skill-pct">88</div>
     </div>
     <div class="skill-row">
-      <div class="skill-name">Identity and Access Security</div>
+      <div class="skill-name" data-i18n="skillIdentityAccess">Identity and Access Security</div>
       <div class="skill-bar"><div class="skill-fill" style="width:87%;animation-delay:0.35s"></div></div>
       <div class="skill-pct">87</div>
     </div>
     <div class="skill-row">
-      <div class="skill-name">Network and Traffic Analysis</div>
+      <div class="skill-name" data-i18n="skillNetworkTraffic">Network and Traffic Analysis</div>
       <div class="skill-bar"><div class="skill-fill" style="width:86%;animation-delay:0.4s"></div></div>
       <div class="skill-pct">86</div>
     </div>
     <div class="skill-row">
-      <div class="skill-name">Technical Communication</div>
+      <div class="skill-name" data-i18n="skillCommunication">Technical Communication</div>
       <div class="skill-bar"><div class="skill-fill" style="width:90%;animation-delay:0.45s"></div></div>
       <div class="skill-pct">90</div>
     </div>
     <div class="skill-row">
-      <div class="skill-name">Mentoring and Knowledge Sharing</div>
+      <div class="skill-name" data-i18n="skillMentoring">Mentoring and Knowledge Sharing</div>
       <div class="skill-bar"><div class="skill-fill" style="width:88%;animation-delay:0.5s"></div></div>
       <div class="skill-pct">88</div>
     </div>
@@ -1061,35 +1144,35 @@ footer a { color: var(--cyan); text-decoration: none; }
 <div class="full-divider"></div>
 
 <div class="section" id="core-skills">
-  <div class="section-label">Capabilities</div>
-  <div class="section-title">Core Skills</div>
-  <p class="section-intro">
+  <div class="section-label" data-i18n="coreSkillsLabel">Capabilities</div>
+  <div class="section-title" data-i18n="coreSkillsTitle">Operational Capabilities</div>
+  <p class="section-intro" data-i18n="coreSkillsIntro">
     Detailed capability areas from hands-on delivery, with the tools and frameworks most relevant to each domain.
   </p>
 
   <div class="accordion-toolbar">
-    <button class="accordion-btn" id="expand-all-skills" type="button" aria-pressed="false">Expand All</button>
-    <button class="accordion-btn" id="collapse-all-skills" type="button" aria-pressed="false">Collapse All</button>
+    <button class="accordion-btn" id="expand-all-skills" type="button" aria-pressed="false" data-i18n="expandAll">Expand All</button>
+    <button class="accordion-btn" id="collapse-all-skills" type="button" aria-pressed="false" data-i18n="collapseAll">Collapse All</button>
   </div>
 
   <div class="accordion-list" id="core-skills-list">
     <details class="accordion-item" open>
       <summary class="accordion-summary">
-        <span class="accordion-label">Core Skill 01</span>
+        <span class="accordion-label" data-i18n="core01Label">Capability 01</span>
         <span>
-          <span class="accordion-title">Systems Architecture &amp; Design</span>
-          <span class="accordion-subtitle">Hybrid environments, network visibility, identity security, and automation workflows.</span>
+          <span class="accordion-title" data-i18n="core01Title">Systems Architecture &amp; Design</span>
+          <span class="accordion-subtitle" data-i18n="core01Subtitle">Hybrid environments, network visibility, identity security, and automation workflows.</span>
         </span>
         <span class="accordion-icon" aria-hidden="true"></span>
       </summary>
       <div class="accordion-body">
         <div class="accordion-inner">
           <ul class="accordion-list-items">
-            <li>Solid understanding of hybrid environments: on-prem infrastructure, Windows and Linux servers, Microsoft 365, and Azure AD / Entra ID.</li>
-            <li>Network traffic analysis across routing, switching, proxies, VPNs, network segmentation, WAF, and SD-WAN.</li>
-            <li>Design of automation workflows to handle repetitive or time-sensitive security tasks.</li>
-            <li>Understanding of identity security architecture: privilege management, conditional access, MFA enforcement, and identity-based threat detection.</li>
-            <li>Basic exposure to Azure and AWS activity monitoring and IAM review.</li>
+            <li data-i18n="core01Item1">Solid understanding of hybrid environments: on-prem infrastructure, Windows and Linux servers, Microsoft 365, and Azure AD / Entra ID.</li>
+            <li data-i18n="core01Item2">Network traffic analysis across routing, switching, proxies, VPNs, network segmentation, WAF, and SD-WAN.</li>
+            <li data-i18n="core01Item3">Design of automation workflows to handle repetitive or time-sensitive security tasks.</li>
+            <li data-i18n="core01Item4">Understanding of identity security architecture: privilege management, conditional access, MFA enforcement, and identity-based threat detection.</li>
+            <li data-i18n="core01Item5">Basic exposure to Azure and AWS activity monitoring and IAM review.</li>
           </ul>
           <div class="accordion-tags">
             <div class="tag">Windows Server</div>
@@ -1110,21 +1193,21 @@ footer a { color: var(--cyan); text-decoration: none; }
 
     <details class="accordion-item">
       <summary class="accordion-summary">
-        <span class="accordion-label">Core Skill 02</span>
+        <span class="accordion-label" data-i18n="core02Label">Capability 02</span>
         <span>
-          <span class="accordion-title">SOC Capability &amp; Detection Engineering</span>
-          <span class="accordion-subtitle">Log correlation, SOC capability building, platform operations, and SIEM migration exposure.</span>
+          <span class="accordion-title" data-i18n="core02Title">SOC Capability &amp; Detection Engineering</span>
+          <span class="accordion-subtitle" data-i18n="core02Subtitle">Log correlation, SOC capability building, platform operations, and SIEM migration exposure.</span>
         </span>
         <span class="accordion-icon" aria-hidden="true"></span>
       </summary>
       <div class="accordion-body">
         <div class="accordion-inner">
           <ul class="accordion-list-items">
-            <li>Multi-source log correlation across Windows event logs, authentication logs, network telemetry, and EDR data.</li>
-            <li>Contribution to SOC capabilities: log ingestion, normalization pipelines, detection rules, enrichment workflows, and MITRE ATT&amp;CK mapping.</li>
-            <li>Hands-on experience with Splunk, IBM QRadar, Microsoft Defender, Zscaler, and Cortex XSOAR.</li>
-            <li>Experience reviewing security policies and assessing the consistency and coverage of existing controls.</li>
-            <li>Exposure to SIEM migration projects, including log-source scoping, normalization schema design, and phased detection porting.</li>
+            <li data-i18n="core02Item1">Multi-source log correlation across Windows event logs, authentication logs, network telemetry, and EDR data.</li>
+            <li data-i18n="core02Item2">Contribution to SOC capabilities: log ingestion, normalization pipelines, detection rules, enrichment workflows, and MITRE ATT&amp;CK mapping.</li>
+            <li data-i18n="core02Item3">Hands-on experience with Splunk, IBM QRadar, Microsoft Defender, Zscaler, and Cortex XSOAR.</li>
+            <li data-i18n="core02Item4">Experience reviewing security policies and assessing the consistency and coverage of existing controls.</li>
+            <li data-i18n="core02Item5">Exposure to SIEM migration projects, including log-source scoping, normalization schema design, and phased detection porting.</li>
           </ul>
           <div class="accordion-tags">
             <div class="tag">Splunk</div>
@@ -1144,22 +1227,22 @@ footer a { color: var(--cyan); text-decoration: none; }
 
     <details class="accordion-item">
       <summary class="accordion-summary">
-        <span class="accordion-label">Core Skill 03</span>
+        <span class="accordion-label" data-i18n="core03Label">Capability 03</span>
         <span>
-          <span class="accordion-title">CTI, DFIR &amp; Malware Analysis</span>
-          <span class="accordion-subtitle">APT tradecraft, alert triage, threat intelligence tooling, and malware analysis environments.</span>
+          <span class="accordion-title" data-i18n="core03Title">CTI, DFIR &amp; Malware Analysis</span>
+          <span class="accordion-subtitle" data-i18n="core03Subtitle">APT tradecraft, alert triage, threat intelligence tooling, and malware analysis environments.</span>
         </span>
         <span class="accordion-icon" aria-hidden="true"></span>
       </summary>
       <div class="accordion-body">
         <div class="accordion-inner">
           <ul class="accordion-list-items">
-            <li>Good understanding of APT TTPs: social engineering, identity abuse, lateral movement, and exploitation of exposed services.</li>
-            <li>Ability to translate attacker techniques into operational risks for IT teams, SOC analysts, and management, and update detection rules accordingly.</li>
-            <li>Experience with threat intelligence tools: dark web monitoring, VirusTotal, CrowdStrike intelligence feeds, and IoC management.</li>
-            <li>Alert triage and weak signal analysis: forming hypotheses and reconstructing incidents involving servers, clusters, or cloud environments.</li>
-            <li>Understanding of both static and dynamic malware analysis: obfuscated scripts, encoded or compressed data, and basic transformations.</li>
-            <li>Experience with analysis environments including Windows Sandbox, WSL, REMnux, Cuckoo Sandbox, Hybrid Analysis, and AnyRun.</li>
+            <li data-i18n="core03Item1">Good understanding of APT TTPs: social engineering, identity abuse, lateral movement, and exploitation of exposed services.</li>
+            <li data-i18n="core03Item2">Ability to translate attacker techniques into operational risks for IT teams, SOC analysts, and management, and update detection rules accordingly.</li>
+            <li data-i18n="core03Item3">Experience with threat intelligence tools: dark web monitoring, VirusTotal, CrowdStrike intelligence feeds, and IoC management.</li>
+            <li data-i18n="core03Item4">Alert triage and weak signal analysis: forming hypotheses and reconstructing incidents involving servers, clusters, or cloud environments.</li>
+            <li data-i18n="core03Item5">Understanding of both static and dynamic malware analysis: obfuscated scripts, encoded or compressed data, and basic transformations.</li>
+            <li data-i18n="core03Item6">Experience with analysis environments including Windows Sandbox, WSL, REMnux, Cuckoo Sandbox, Hybrid Analysis, and AnyRun.</li>
           </ul>
           <div class="accordion-tags">
             <div class="tag">VirusTotal</div>
@@ -1180,23 +1263,23 @@ footer a { color: var(--cyan); text-decoration: none; }
 
     <details class="accordion-item">
       <summary class="accordion-summary">
-        <span class="accordion-label">Core Skill 04</span>
+        <span class="accordion-label" data-i18n="core04Label">Capability 04</span>
         <span>
-          <span class="accordion-title">Investigation Workflow &amp; Detection Tuning</span>
-          <span class="accordion-subtitle">Behavioral analysis, tool-driven investigations, and detection tuning across multiple log sources.</span>
+          <span class="accordion-title" data-i18n="core04Title">Investigation Workflow &amp; Detection Tuning</span>
+          <span class="accordion-subtitle" data-i18n="core04Subtitle">Behavioral analysis, tool-driven investigations, and detection tuning across multiple log sources.</span>
         </span>
         <span class="accordion-icon" aria-hidden="true"></span>
       </summary>
       <div class="accordion-body">
         <div class="accordion-inner">
           <ul class="accordion-list-items">
-            <li>Behavioral analysis: monitoring processes, file activity, network connections, and execution patterns.</li>
-            <li>Ability to work through unknown code progressively, focusing on logic and critical functions rather than line-by-line review.</li>
-            <li>Targeted testing of NGAV, EDR, proxies, and NDR to identify blind spots, with structured reporting back to vendor partners.</li>
-            <li>Regular use of Sysinternals tools, Windows log analysis, packet capture, and Wireshark.</li>
-            <li>Building coherent timelines and quickly separating legitimate artefacts from suspicious signals.</li>
-            <li>Advanced use of CyberChef for deobfuscation and analysis of encoded or compressed content.</li>
-            <li>Experience writing and tuning detection use cases across multiple log sources, mapped to MITRE ATT&amp;CK tactics and techniques.</li>
+            <li data-i18n="core04Item1">Behavioral analysis: monitoring processes, file activity, network connections, and execution patterns.</li>
+            <li data-i18n="core04Item2">Ability to work through unknown code progressively, focusing on logic and critical functions rather than line-by-line review.</li>
+            <li data-i18n="core04Item3">Targeted testing of NGAV, EDR, proxies, and NDR to identify blind spots, with structured reporting back to vendor partners.</li>
+            <li data-i18n="core04Item4">Regular use of Sysinternals tools, Windows log analysis, packet capture, and Wireshark.</li>
+            <li data-i18n="core04Item5">Building coherent timelines and quickly separating legitimate artefacts from suspicious signals.</li>
+            <li data-i18n="core04Item6">Advanced use of CyberChef for deobfuscation and analysis of encoded or compressed content.</li>
+            <li data-i18n="core04Item7">Experience writing and tuning detection use cases across multiple log sources, mapped to MITRE ATT&amp;CK tactics and techniques.</li>
           </ul>
           <div class="accordion-tags">
             <div class="tag">Sysinternals</div>
@@ -1219,22 +1302,22 @@ footer a { color: var(--cyan); text-decoration: none; }
 
     <details class="accordion-item">
       <summary class="accordion-summary">
-        <span class="accordion-label">Core Skill 05</span>
+        <span class="accordion-label" data-i18n="core05Label">Capability 05</span>
         <span>
-          <span class="accordion-title">Knowledge Sharing &amp; Mentoring</span>
-          <span class="accordion-subtitle">Technical communication, workshops, mentoring, and internal documentation.</span>
+          <span class="accordion-title" data-i18n="core05Title">Knowledge Sharing &amp; Mentoring</span>
+          <span class="accordion-subtitle" data-i18n="core05Subtitle">Technical communication, workshops, mentoring, and internal documentation.</span>
         </span>
         <span class="accordion-icon" aria-hidden="true"></span>
       </summary>
       <div class="accordion-body">
         <div class="accordion-inner">
           <ul class="accordion-list-items">
-            <li>Explaining technical topics clearly for different audiences, including non-technical stakeholders.</li>
-            <li>Delivering educational presentations on attack chains, identity abuse, remote access risks, and exposed services.</li>
-            <li>Designing workshop materials for IT and SOC teams on DFIR, CTI, advanced malware analysis, and Purple Teaming.</li>
-            <li>Mentoring students and junior analysts on investigation projects, malware analysis, security audits, and tool development.</li>
-            <li>Writing internal documentation: playbooks, detection summaries, post-incident reports, and onboarding guides.</li>
-            <li>Reviewing and giving structured feedback on technical work, with a focus on building long-term competence.</li>
+            <li data-i18n="core05Item1">Explaining technical topics clearly for different audiences, including non-technical stakeholders.</li>
+            <li data-i18n="core05Item2">Delivering educational presentations on attack chains, identity abuse, remote access risks, and exposed services.</li>
+            <li data-i18n="core05Item3">Designing workshop materials for IT and SOC teams on DFIR, CTI, advanced malware analysis, and Purple Teaming.</li>
+            <li data-i18n="core05Item4">Mentoring students and junior analysts on investigation projects, malware analysis, security audits, and tool development.</li>
+            <li data-i18n="core05Item5">Writing internal documentation: playbooks, detection summaries, post-incident reports, and onboarding guides.</li>
+            <li data-i18n="core05Item6">Reviewing and giving structured feedback on technical work, with a focus on building long-term competence.</li>
           </ul>
           <div class="accordion-tags">
             <div class="tag">Playbooks</div>
@@ -1251,24 +1334,24 @@ footer a { color: var(--cyan); text-decoration: none; }
 
     <details class="accordion-item">
       <summary class="accordion-summary">
-        <span class="accordion-label">Core Skill 06</span>
+        <span class="accordion-label" data-i18n="core06Label">Capability 06</span>
         <span>
-          <span class="accordion-title">Cross-Functional Skills &amp; Professional Strengths</span>
-          <span class="accordion-subtitle">Security posture improvement, structured communication, prioritisation, and leadership growth.</span>
+          <span class="accordion-title" data-i18n="core06Title">Cross-Functional Skills &amp; Professional Strengths</span>
+          <span class="accordion-subtitle" data-i18n="core06Subtitle">Security posture improvement, structured communication, prioritisation, and leadership growth.</span>
         </span>
         <span class="accordion-icon" aria-hidden="true"></span>
       </summary>
       <div class="accordion-body">
         <div class="accordion-inner">
           <ul class="accordion-list-items">
-            <li>Proactively identifying gaps and proposing practical improvements to the overall security posture.</li>
-            <li>Staying focused and methodical under pressure, particularly during incident response situations.</li>
-            <li>Risk-based prioritisation: evaluating impact, exposure, and exploitability to decide what matters most.</li>
-            <li>Working well with local and global teams across IT, security, and business functions.</li>
-            <li>Developing a leadership style based on consistency, guidance, and genuine interest in others' growth.</li>
-            <li>Clear, respectful, and structured communication that helps others understand complex situations without unnecessary jargon.</li>
-            <li>Comfortable managing multiple parallel workstreams: vendor PoVs, detection engineering, stakeholder coordination, and documentation.</li>
-            <li>Strong attention to detail when producing structured deliverables: frameworks, reference documents, and technical reports.</li>
+            <li data-i18n="core06Item1">Proactively identifying gaps and proposing practical improvements to the overall security posture.</li>
+            <li data-i18n="core06Item2">Staying focused and methodical under pressure, particularly during incident response situations.</li>
+            <li data-i18n="core06Item3">Risk-based prioritisation: evaluating impact, exposure, and exploitability to decide what matters most.</li>
+            <li data-i18n="core06Item4">Working well with local and global teams across IT, security, and business functions.</li>
+            <li data-i18n="core06Item5">Developing a leadership style based on consistency, guidance, and genuine interest in others' growth.</li>
+            <li data-i18n="core06Item6">Clear, respectful, and structured communication that helps others understand complex situations without unnecessary jargon.</li>
+            <li data-i18n="core06Item7">Comfortable managing multiple parallel workstreams: vendor PoVs, detection engineering, stakeholder coordination, and documentation.</li>
+            <li data-i18n="core06Item8">Strong attention to detail when producing structured deliverables: frameworks, reference documents, and technical reports.</li>
           </ul>
           <div class="accordion-tags">
             <div class="tag">Risk Management</div>
@@ -1289,9 +1372,9 @@ footer a { color: var(--cyan); text-decoration: none; }
 <div class="full-divider"></div>
 
 <div class="section" id="writing">
-  <div class="section-label">Content</div>
-  <div class="section-title">Medium Articles</div>
-  <p class="section-intro">
+  <div class="section-label" data-i18n="writingLabel">Content</div>
+  <div class="section-title" data-i18n="writingTitle">Medium Articles</div>
+  <p class="section-intro" data-i18n="writingIntro">
     Live integration from my Medium feed. This section shows only recent cybersecurity-focused articles.
   </p>
 
@@ -1310,36 +1393,36 @@ footer a { color: var(--cyan); text-decoration: none; }
   <p class="medium-status" id="medium-status">Loading latest cybersecurity articles...</p>
 
   <div class="hero-links">
-    <a class="btn btn-outline" href="https://medium.com/@noussayr.derbel" target="_blank" rel="noopener noreferrer">Read All Articles</a>
+    <a class="btn btn-outline" href="https://medium.com/@noussayr.derbel" target="_blank" rel="noopener noreferrer" data-i18n="mediumReadAll">Read All Articles</a>
   </div>
 </div>
 
 <div class="full-divider"></div>
 
 <div class="section" id="activities">
-  <div class="section-label">Growth</div>
-  <div class="section-title">Currently Improving</div>
+  <div class="section-label" data-i18n="growthLabel">Growth</div>
+  <div class="section-title" data-i18n="growthTitle">Currently Improving</div>
 
   <div class="activity-grid">
     <div class="activity-item">
       <div class="activity-icon">[1]</div>
       <div>
-        <div class="activity-name">Strategic Threat Intelligence</div>
-        <div class="activity-detail">Improving long-term threat framing, adversary context building, and the ability to connect intelligence with operational decisions.</div>
+        <div class="activity-name" data-i18n="growth1Title">Strategic Threat Intelligence</div>
+        <div class="activity-detail" data-i18n="growth1Detail">Improving long-term threat framing, adversary context building, and the ability to connect intelligence with operational decisions.</div>
       </div>
     </div>
     <div class="activity-item">
       <div class="activity-icon">[2]</div>
       <div>
-        <div class="activity-name">Product Design &amp; Development</div>
-        <div class="activity-detail">Improving how technical ideas become useful tools, structured workflows, and practical deliverables that teams can actually use.</div>
+        <div class="activity-name" data-i18n="growth2Title">Product Design &amp; Development</div>
+        <div class="activity-detail" data-i18n="growth2Detail">Improving how technical ideas become useful tools, structured workflows, and practical deliverables that teams can actually use.</div>
       </div>
     </div>
     <div class="activity-item">
       <div class="activity-icon">[3]</div>
       <div>
-        <div class="activity-name">Leadership</div>
-        <div class="activity-detail">Improving guidance, decision-making, communication, and the ability to help teams grow with consistency over time.</div>
+        <div class="activity-name" data-i18n="growth3Title">Leadership</div>
+        <div class="activity-detail" data-i18n="growth3Detail">Improving guidance, decision-making, communication, and the ability to help teams grow with consistency over time.</div>
       </div>
     </div>
   </div>
@@ -1348,36 +1431,36 @@ footer a { color: var(--cyan); text-decoration: none; }
 <div class="full-divider"></div>
 
 <div class="section" id="credentials">
-  <div class="section-label">Background</div>
-  <div class="section-title">Education &amp; Certifications</div>
-  <p class="section-intro">
+  <div class="section-label" data-i18n="credentialsLabel">Background</div>
+  <div class="section-title" data-i18n="credentialsTitle">Education &amp; Certifications</div>
+  <p class="section-intro" data-i18n="credentialsIntro">
     Formal education and continuous learning details from my background.
   </p>
 
   <div class="credentials-grid">
     <div class="credential-card">
-      <div class="credential-head">Education</div>
-      <div class="credential-title">Bachelor's Degree in Information and Communication Technologies</div>
+      <div class="credential-head" data-i18n="educationHead">Education</div>
+      <div class="credential-title" data-i18n="educationTitle">Bachelor's Degree in Information and Communication Technologies</div>
       <div class="credential-meta">Oct 2017 - Jul 2020</div>
-      <div class="credential-desc">
+      <div class="credential-desc" data-i18n="educationDesc">
         Major in Network Security. Foundation in network defense, system security fundamentals, and practical cybersecurity operations.
       </div>
     </div>
 
     <div class="credential-card">
-      <div class="credential-head">Certification</div>
+      <div class="credential-head" data-i18n="certificationHead">Certification</div>
       <div class="credential-title">Advanced Malware Analysis</div>
       <div class="credential-meta">Jan 2025</div>
-      <div class="credential-desc">
+      <div class="credential-desc" data-i18n="cert1Desc">
         Advanced malware behavior analysis, execution flow understanding, and structured investigation techniques.
       </div>
     </div>
 
     <div class="credential-card">
-      <div class="credential-head">Certification</div>
+      <div class="credential-head" data-i18n="certificationHead">Certification</div>
       <div class="credential-title">Advanced Cyber Threat Intelligence</div>
       <div class="credential-meta">Dec 2024</div>
-      <div class="credential-desc">
+      <div class="credential-desc" data-i18n="cert2Desc">
         Adversary-focused intelligence interpretation, context-driven prioritization, and operationally relevant threat analysis.
       </div>
     </div>
@@ -1387,12 +1470,12 @@ footer a { color: var(--cyan); text-decoration: none; }
 <div class="full-divider"></div>
 
 <div class="section" id="contact">
-  <div class="section-label">Contact</div>
-  <div class="section-title">Get in Touch</div>
+  <div class="section-label" data-i18n="contactLabel">Contact</div>
+  <div class="section-title" data-i18n="contactTitle">Get in Touch</div>
 
   <div class="contact-grid">
     <div>
-      <p class="contact-intro">
+      <p class="contact-intro" data-i18n="contactIntro">
         Open to senior cybersecurity engineering roles, consulting engagements,
         and teaching opportunities. Based in Tallinn, Estonia.
       </p>
@@ -1400,29 +1483,29 @@ footer a { color: var(--cyan); text-decoration: none; }
         <a class="contact-link" href="mailto:noussayr.derbel@gmail.com">
           <span class="contact-link-icon">@</span>
           <div>
-            <span class="contact-link-label">Email</span>
+            <span class="contact-link-label" data-i18n="contactEmailLabel">Email</span>
             <span class="contact-link-val">noussayr.derbel@gmail.com</span>
           </div>
         </a>
         <a class="contact-link" href="tel:+37251966024">
           <span class="contact-link-icon">tel</span>
           <div>
-            <span class="contact-link-label">Phone</span>
+            <span class="contact-link-label" data-i18n="contactPhoneLabel">Phone</span>
             <span class="contact-link-val">+372 5196 6024</span>
           </div>
         </a>
         <a class="contact-link" href="https://medium.com/@noussayr.derbel" target="_blank" rel="noopener noreferrer">
           <span class="contact-link-icon">M</span>
           <div>
-            <span class="contact-link-label">Medium</span>
+            <span class="contact-link-label" data-i18n="contactMediumLabel">Medium</span>
             <span class="contact-link-val">@noussayr.derbel</span>
           </div>
         </a>
         <a class="contact-link" href="https://www.linkedin.com/in/noussayr-derbel-29b182174/" target="_blank" rel="noopener noreferrer">
           <span class="contact-link-icon">in</span>
           <div>
-            <span class="contact-link-label">LinkedIn</span>
-            <span class="contact-link-val">Professional profile</span>
+            <span class="contact-link-label" data-i18n="contactLinkedInLabel">LinkedIn</span>
+            <span class="contact-link-val" data-i18n="contactLinkedInValue">Professional profile</span>
           </div>
         </a>
       </div>
@@ -1436,20 +1519,20 @@ footer a { color: var(--cyan); text-decoration: none; }
       </div>
       <div class="terminal-body">
         <span class="t-line"><span class="t-prompt">noussayr@security</span> ~$ <span class="t-cmd">whoami</span></span>
-        <span class="t-out">Senior Cybersecurity Engineer</span>
-        <span class="t-out">DFIR / Detection / Security Architecture</span>
+        <span class="t-out" data-i18n="terminalRole1">Senior Cybersecurity Engineer</span>
+        <span class="t-out" data-i18n="terminalRole2">DFIR / Detection / Security Architecture</span>
         <br>
         <span class="t-line"><span class="t-prompt">noussayr@security</span> ~$ <span class="t-cmd">cat location.txt</span></span>
-        <span class="t-out">Tallinn, Estonia</span>
-        <span class="t-out dim">Open to remote and relocation options</span>
+        <span class="t-out" data-i18n="terminalLocation">Tallinn, Estonia</span>
+        <span class="t-out dim" data-i18n="terminalLocationDim">Open to remote and relocation options</span>
         <br>
         <span class="t-line"><span class="t-prompt">noussayr@security</span> ~$ <span class="t-cmd">cat languages.txt</span></span>
-        <span class="t-out">Arabic</span>
-        <span class="t-out">English</span>
-        <span class="t-out">French</span>
+        <span class="t-out" data-i18n="terminalLang1">Arabic</span>
+        <span class="t-out" data-i18n="terminalLang2">English</span>
+        <span class="t-out" data-i18n="terminalLang3">French</span>
         <br>
         <span class="t-line"><span class="t-prompt">noussayr@security</span> ~$ <span class="t-cmd">cat status.txt</span></span>
-        <span class="t-out" style="color:var(--green)">[open] Available for opportunities</span>
+        <span class="t-out" style="color:var(--green)" data-i18n="terminalStatus">[open] Available for opportunities</span>
         <br>
         <span class="t-line"><span class="t-prompt">noussayr@security</span> ~$ <span class="t-cursor"></span></span>
       </div>
@@ -1458,12 +1541,609 @@ footer a { color: var(--cyan); text-decoration: none; }
 </div>
 
 <footer>
-  <span>&copy; <span id="year"></span> | Built with AI-assisted coding support</span>
-  <span><a href="#about">Back to top</a></span>
+  <span>&copy; <span id="year"></span> | <span data-i18n="footerBuiltWith">Built with AI-assisted coding support</span></span>
+  <span><a href="#about" data-i18n="footerBackToTop">Back to top</a></span>
 </footer>
+
+</div>
 
 <script>
   document.getElementById('year').textContent = String(new Date().getFullYear());
+
+  var translations = {
+    en: {
+      documentTitle: "Noussayr Derbel - Cybersecurity Engineer",
+      documentDescription: "Portfolio of Noussayr Derbel, focused on DFIR, detection engineering, threat intelligence, and security architecture.",
+      navAbout: "About",
+      navCoreSkills: "Capabilities",
+      navSkills: "Expertise",
+      navWriting: "Writing",
+      navFocus: "Focus",
+      navCredentials: "Credentials",
+      navContact: "Contact",
+      heroStatus: "Available for senior roles and consulting",
+      heroTitle: "Senior Cybersecurity Engineer",
+      heroBio: "Hands-on cybersecurity engineer with 5+ years of experience across <strong>SOC operations</strong>, <strong>consulting</strong>, and <strong>enterprise security engineering</strong>. I enjoy experimenting with new methodologies and tools, learning continuously, and playing CTFs whenever I feel like it. Alongside day-to-day technical work, I am steadily developing leadership through mentoring, knowledge sharing, and cross-functional collaboration to be ready for broader security responsibilities over time.",
+      heroBtnContact: "Get in Touch",
+      heroBtnCoreSkills: "View Capabilities",
+      heroBtnEmail: "Email",
+      statYears: "Years Experience",
+      statSkillAreas: "Expertise Areas",
+      statLanguages: "Working Languages",
+      statTools: "Frameworks / Tools",
+      skillsLabel: "Expertise",
+      skillsTitle: "Areas of Expertise",
+      skillsIntro: "A high-level view of the security domains I work in most often, from incident response and detection engineering to architecture, communication, and mentoring.",
+      skillIncidentResponse: "Incident Response and DFIR",
+      skillDetectionEngineering: "Threat Detection Engineering",
+      skillThreatIntel: "Threat Intelligence and Hunting",
+      skillSiemTelemetry: "SIEM and Telemetry Engineering",
+      skillMalwareAnalysis: "Malware Analysis",
+      skillArchitectureDesign: "Security Architecture and Design",
+      skillIdentityAccess: "Identity and Access Security",
+      skillNetworkTraffic: "Network and Traffic Analysis",
+      skillCommunication: "Technical Communication",
+      skillMentoring: "Mentoring and Knowledge Sharing",
+      coreSkillsLabel: "Capabilities",
+      coreSkillsTitle: "Operational Capabilities",
+      coreSkillsIntro: "Detailed capability areas from hands-on delivery, with the tools and frameworks most relevant to each domain.",
+      expandAll: "Expand All",
+      collapseAll: "Collapse All",
+      core01Label: "Capability 01",
+      core01Title: "Systems Architecture & Design",
+      core01Subtitle: "Hybrid environments, network visibility, identity security, and automation workflows.",
+      core01Item1: "Solid understanding of hybrid environments: on-prem infrastructure, Windows and Linux servers, Microsoft 365, and Azure AD / Entra ID.",
+      core01Item2: "Network traffic analysis across routing, switching, proxies, VPNs, network segmentation, WAF, and SD-WAN.",
+      core01Item3: "Design of automation workflows to handle repetitive or time-sensitive security tasks.",
+      core01Item4: "Understanding of identity security architecture: privilege management, conditional access, MFA enforcement, and identity-based threat detection.",
+      core01Item5: "Basic exposure to Azure and AWS activity monitoring and IAM review.",
+      core02Label: "Capability 02",
+      core02Title: "SOC Capability & Detection Engineering",
+      core02Subtitle: "Log correlation, SOC capability building, platform operations, and SIEM migration exposure.",
+      core02Item1: "Multi-source log correlation across Windows event logs, authentication logs, network telemetry, and EDR data.",
+      core02Item2: "Contribution to SOC capabilities: log ingestion, normalization pipelines, detection rules, enrichment workflows, and MITRE ATT&CK mapping.",
+      core02Item3: "Hands-on experience with Splunk, IBM QRadar, Microsoft Defender, Zscaler, and Cortex XSOAR.",
+      core02Item4: "Experience reviewing security policies and assessing the consistency and coverage of existing controls.",
+      core02Item5: "Exposure to SIEM migration projects, including log-source scoping, normalization schema design, and phased detection porting.",
+      core03Label: "Capability 03",
+      core03Title: "CTI, DFIR & Malware Analysis",
+      core03Subtitle: "APT tradecraft, alert triage, threat intelligence tooling, and malware analysis environments.",
+      core03Item1: "Good understanding of APT TTPs: social engineering, identity abuse, lateral movement, and exploitation of exposed services.",
+      core03Item2: "Ability to translate attacker techniques into operational risks for IT teams, SOC analysts, and management, and update detection rules accordingly.",
+      core03Item3: "Experience with threat intelligence tools: dark web monitoring, VirusTotal, CrowdStrike intelligence feeds, and IoC management.",
+      core03Item4: "Alert triage and weak signal analysis: forming hypotheses and reconstructing incidents involving servers, clusters, or cloud environments.",
+      core03Item5: "Understanding of both static and dynamic malware analysis: obfuscated scripts, encoded or compressed data, and basic transformations.",
+      core03Item6: "Experience with analysis environments including Windows Sandbox, WSL, REMnux, Cuckoo Sandbox, Hybrid Analysis, and AnyRun.",
+      core04Label: "Capability 04",
+      core04Title: "Investigation Workflow & Detection Tuning",
+      core04Subtitle: "Behavioral analysis, tool-driven investigations, and detection tuning across multiple log sources.",
+      core04Item1: "Behavioral analysis: monitoring processes, file activity, network connections, and execution patterns.",
+      core04Item2: "Ability to work through unknown code progressively, focusing on logic and critical functions rather than line-by-line review.",
+      core04Item3: "Targeted testing of NGAV, EDR, proxies, and NDR to identify blind spots, with structured reporting back to vendor partners.",
+      core04Item4: "Regular use of Sysinternals tools, Windows log analysis, packet capture, and Wireshark.",
+      core04Item5: "Building coherent timelines and quickly separating legitimate artefacts from suspicious signals.",
+      core04Item6: "Advanced use of CyberChef for deobfuscation and analysis of encoded or compressed content.",
+      core04Item7: "Experience writing and tuning detection use cases across multiple log sources, mapped to MITRE ATT&CK tactics and techniques.",
+      core05Label: "Capability 05",
+      core05Title: "Knowledge Sharing & Mentoring",
+      core05Subtitle: "Technical communication, workshops, mentoring, and internal documentation.",
+      core05Item1: "Explaining technical topics clearly for different audiences, including non-technical stakeholders.",
+      core05Item2: "Delivering educational presentations on attack chains, identity abuse, remote access risks, and exposed services.",
+      core05Item3: "Designing workshop materials for IT and SOC teams on DFIR, CTI, advanced malware analysis, and Purple Teaming.",
+      core05Item4: "Mentoring students and junior analysts on investigation projects, malware analysis, security audits, and tool development.",
+      core05Item5: "Writing internal documentation: playbooks, detection summaries, post-incident reports, and onboarding guides.",
+      core05Item6: "Reviewing and giving structured feedback on technical work, with a focus on building long-term competence.",
+      core06Label: "Capability 06",
+      core06Title: "Cross-Functional Skills & Professional Strengths",
+      core06Subtitle: "Security posture improvement, structured communication, prioritisation, and leadership growth.",
+      core06Item1: "Proactively identifying gaps and proposing practical improvements to the overall security posture.",
+      core06Item2: "Staying focused and methodical under pressure, particularly during incident response situations.",
+      core06Item3: "Risk-based prioritisation: evaluating impact, exposure, and exploitability to decide what matters most.",
+      core06Item4: "Working well with local and global teams across IT, security, and business functions.",
+      core06Item5: "Developing a leadership style based on consistency, guidance, and genuine interest in others' growth.",
+      core06Item6: "Clear, respectful, and structured communication that helps others understand complex situations without unnecessary jargon.",
+      core06Item7: "Comfortable managing multiple parallel workstreams: vendor PoVs, detection engineering, stakeholder coordination, and documentation.",
+      core06Item8: "Strong attention to detail when producing structured deliverables: frameworks, reference documents, and technical reports.",
+      writingLabel: "Content",
+      writingTitle: "Medium Articles",
+      writingIntro: "Live integration from my Medium feed. This section shows only recent cybersecurity-focused articles.",
+      mediumLoadingTag: "Loading",
+      mediumLoadingTitle: "Fetching latest cybersecurity posts...",
+      mediumLoadingDesc: "This section automatically pulls cybersecurity article titles, summaries, and publish dates from the Medium RSS feed.",
+      mediumLoadingStatus: "Loading latest cybersecurity articles...",
+      mediumReadAll: "Read All Articles",
+      mediumLoadedStatus: "Latest {{count}} cybersecurity articles loaded.",
+      mediumEmptyStatus: "No cybersecurity-specific Medium articles are available right now. Use the Read All Articles button to open Medium directly.",
+      mediumRecentArticle: "Recent article",
+      growthLabel: "Growth",
+      growthTitle: "Currently Improving",
+      growth1Title: "Strategic Threat Intelligence",
+      growth1Detail: "Improving long-term threat framing, adversary context building, and the ability to connect intelligence with operational decisions.",
+      growth2Title: "Product Design & Development",
+      growth2Detail: "Improving how technical ideas become useful tools, structured workflows, and practical deliverables that teams can actually use.",
+      growth3Title: "Leadership",
+      growth3Detail: "Improving guidance, decision-making, communication, and the ability to help teams grow with consistency over time.",
+      credentialsLabel: "Background",
+      credentialsTitle: "Education & Certifications",
+      credentialsIntro: "Formal education and continuous learning details from my background.",
+      educationHead: "Education",
+      educationTitle: "Bachelor's Degree in Information and Communication Technologies",
+      educationDesc: "Major in Network Security. Foundation in network defense, system security fundamentals, and practical cybersecurity operations.",
+      certificationHead: "Certification",
+      cert1Desc: "Advanced malware behavior analysis, execution flow understanding, and structured investigation techniques.",
+      cert2Desc: "Adversary-focused intelligence interpretation, context-driven prioritization, and operationally relevant threat analysis.",
+      contactLabel: "Contact",
+      contactTitle: "Get in Touch",
+      contactIntro: "Open to senior cybersecurity engineering roles, consulting engagements, and teaching opportunities. Based in Tallinn, Estonia.",
+      contactEmailLabel: "Email",
+      contactPhoneLabel: "Phone",
+      contactMediumLabel: "Medium",
+      contactLinkedInLabel: "LinkedIn",
+      contactLinkedInValue: "Professional profile",
+      terminalRole1: "Senior Cybersecurity Engineer",
+      terminalRole2: "DFIR / Detection / Security Architecture",
+      terminalLocation: "Tallinn, Estonia",
+      terminalLocationDim: "Open to remote and relocation options",
+      terminalLang1: "Arabic",
+      terminalLang2: "English",
+      terminalLang3: "French",
+      terminalStatus: "[open] Available for opportunities",
+      footerBuiltWith: "Built with AI-assisted coding support",
+      footerBackToTop: "Back to top",
+      themeTextDark: "Dark",
+      themeTextLight: "Light",
+      themeToggleAria: "Toggle light and dark theme",
+      languageToggleAriaToFr: "Switch language to French",
+      languageToggleAriaToEn: "Switch language to English"
+    },
+    fr: {
+      documentTitle: "Noussayr Derbel - Ingénieur cybersécurité",
+      documentDescription: "Portfolio de Noussayr Derbel, centré sur le DFIR, l'ingénierie de détection, le renseignement sur les menaces et l'architecture sécurité.",
+      navAbout: "À propos",
+      navCoreSkills: "Capacités",
+      navSkills: "Expertise",
+      navWriting: "Articles",
+      navFocus: "Axes",
+      navCredentials: "Parcours",
+      navContact: "Contact",
+      heroStatus: "Disponible pour des postes senior et des missions de conseil",
+      heroTitle: "Ingénieur cybersécurité senior",
+      heroBio: "Ingénieur cybersécurité opérationnel avec plus de 5 ans d'expérience en <strong>opérations SOC</strong>, <strong>conseil</strong> et <strong>ingénierie sécurité en entreprise</strong>. J'aime expérimenter de nouvelles méthodologies et de nouveaux outils, apprendre en continu et faire des CTF quand j'en ai envie. En parallèle du travail technique au quotidien, je développe progressivement mon leadership par le mentorat, le partage de connaissances et la collaboration transverse afin d'être prêt à assumer des responsabilités sécurité plus larges.",
+      heroBtnContact: "Me contacter",
+      heroBtnCoreSkills: "Voir les capacités",
+      heroBtnEmail: "E-mail",
+      statYears: "Années d'expérience",
+      statSkillAreas: "Domaines d'expertise",
+      statLanguages: "Langues de travail",
+      statTools: "Frameworks / Outils",
+      skillsLabel: "Expertise",
+      skillsTitle: "Domaines d'expertise",
+      skillsIntro: "Vue synthétique des domaines sécurité sur lesquels je travaille le plus souvent, de la réponse à incident et l'ingénierie de détection jusqu'à l'architecture, la communication et le mentorat.",
+      skillIncidentResponse: "Réponse à incident et DFIR",
+      skillDetectionEngineering: "Ingénierie de détection",
+      skillThreatIntel: "Renseignement sur les menaces et hunting",
+      skillSiemTelemetry: "Ingénierie SIEM et télémétrie",
+      skillMalwareAnalysis: "Analyse de malwares",
+      skillArchitectureDesign: "Architecture et conception sécurité",
+      skillIdentityAccess: "Sécurité des identités et des accès",
+      skillNetworkTraffic: "Analyse réseau et trafic",
+      skillCommunication: "Communication technique",
+      skillMentoring: "Mentorat et partage de connaissances",
+      coreSkillsLabel: "Capacités",
+      coreSkillsTitle: "Capacités opérationnelles",
+      coreSkillsIntro: "Capacités détaillées issues de l'exécution terrain, avec les outils et frameworks les plus pertinents pour chaque domaine.",
+      expandAll: "Tout ouvrir",
+      collapseAll: "Tout réduire",
+      core01Label: "Capacité 01",
+      core01Title: "Architecture & Design des systèmes",
+      core01Subtitle: "Environnements hybrides, visibilité réseau, sécurité des identités et workflows d'automatisation.",
+      core01Item1: "Bonne compréhension des environnements hybrides : infrastructures on-prem, serveurs Windows et Linux, Microsoft 365 et Azure AD / Entra ID.",
+      core01Item2: "Analyse du trafic réseau couvrant routage, switching, proxys, VPN, segmentation réseau, WAF et SD-WAN.",
+      core01Item3: "Conception de workflows d'automatisation pour traiter des tâches sécurité répétitives ou sensibles au temps.",
+      core01Item4: "Compréhension de l'architecture de sécurité des identités : gestion des privilèges, accès conditionnel, MFA et détection basée sur l'identité.",
+      core01Item5: "Première exposition à la supervision d'activité Azure et AWS ainsi qu'à la revue IAM.",
+      core02Label: "Capacité 02",
+      core02Title: "Capacité SOC & Ingénierie de détection",
+      core02Subtitle: "Corrélation de logs, construction de capacités SOC, opérations plateforme et exposition aux migrations SIEM.",
+      core02Item1: "Corrélation multi-sources entre journaux Windows, logs d'authentification, télémétrie réseau et données EDR.",
+      core02Item2: "Contribution aux capacités SOC : ingestion de logs, pipelines de normalisation, règles de détection, workflows d'enrichissement et mapping MITRE ATT&CK.",
+      core02Item3: "Expérience pratique avec Splunk, IBM QRadar, Microsoft Defender, Zscaler et Cortex XSOAR.",
+      core02Item4: "Expérience de revue de politiques de sécurité et d'évaluation de la cohérence ainsi que de la couverture des contrôles existants.",
+      core02Item5: "Exposition à des projets de migration SIEM, incluant le cadrage des sources de logs, la conception de schémas de normalisation et le portage progressif des détections.",
+      core03Label: "Capacité 03",
+      core03Title: "CTI, DFIR & Analyse de malwares",
+      core03Subtitle: "Tradecraft APT, triage d'alertes, outillage threat intelligence et environnements d'analyse de malwares.",
+      core03Item1: "Bonne compréhension des TTP d'APT : ingénierie sociale, abus d'identité, mouvements latéraux et exploitation de services exposés.",
+      core03Item2: "Capacité à traduire les techniques adverses en risques opérationnels pour les équipes IT, les analystes SOC et le management, puis à adapter les règles de détection.",
+      core03Item3: "Expérience avec des outils de threat intelligence : surveillance du dark web, VirusTotal, flux CrowdStrike et gestion des IoC.",
+      core03Item4: "Triage d'alertes et analyse de signaux faibles : formuler des hypothèses et reconstruire des incidents impliquant des serveurs, clusters ou environnements cloud.",
+      core03Item5: "Compréhension de l'analyse statique et dynamique de malwares : scripts obfusqués, données encodées ou compressées et transformations de base.",
+      core03Item6: "Expérience avec des environnements d'analyse comme Windows Sandbox, WSL, REMnux, Cuckoo Sandbox, Hybrid Analysis et AnyRun.",
+      core04Label: "Capacité 04",
+      core04Title: "Workflow d'investigation & Ajustement des détections",
+      core04Subtitle: "Analyse comportementale, investigations guidées par les outils et tuning de détection sur plusieurs sources de logs.",
+      core04Item1: "Analyse comportementale : surveillance des processus, de l'activité fichier, des connexions réseau et des schémas d'exécution.",
+      core04Item2: "Capacité à aborder du code inconnu progressivement, en se concentrant sur la logique et les fonctions critiques plutôt que sur une lecture ligne par ligne.",
+      core04Item3: "Tests ciblés de NGAV, EDR, proxys et NDR pour identifier les angles morts, avec reporting structuré aux partenaires éditeurs.",
+      core04Item4: "Usage régulier des outils Sysinternals, de l'analyse des logs Windows, de la capture réseau et de Wireshark.",
+      core04Item5: "Construction de timelines cohérentes et séparation rapide entre artefacts légitimes et signaux suspects.",
+      core04Item6: "Usage avancé de CyberChef pour la désobfuscation et l'analyse de contenus encodés ou compressés.",
+      core04Item7: "Expérience dans la rédaction et le tuning de cas d'usage de détection sur plusieurs sources de logs, mappés sur les tactiques et techniques MITRE ATT&CK.",
+      core05Label: "Capacité 05",
+      core05Title: "Partage de connaissances & Mentorat",
+      core05Subtitle: "Communication technique, ateliers, mentorat et documentation interne.",
+      core05Item1: "Capacité à expliquer clairement des sujets techniques à différents publics, y compris à des parties prenantes non techniques.",
+      core05Item2: "Animation de présentations pédagogiques sur les chaînes d'attaque, l'abus d'identité, les risques liés aux accès distants et les services exposés.",
+      core05Item3: "Conception de supports d'atelier pour les équipes IT et SOC sur le DFIR, la CTI, l'analyse avancée de malwares et le Purple Teaming.",
+      core05Item4: "Mentorat d'étudiants et de profils juniors sur des projets d'investigation, d'analyse de malwares, d'audits sécurité et de développement d'outils.",
+      core05Item5: "Rédaction de documentation interne : playbooks, synthèses de détection, rapports post-incident et guides d'onboarding.",
+      core05Item6: "Relecture et retours structurés sur des travaux techniques, avec un focus sur la montée en compétence durable.",
+      core06Label: "Capacité 06",
+      core06Title: "Compétences transverses & Forces professionnelles",
+      core06Subtitle: "Amélioration de la posture sécurité, communication structurée, priorisation et développement du leadership.",
+      core06Item1: "Identification proactive des écarts et proposition d'améliorations pragmatiques pour la posture sécurité globale.",
+      core06Item2: "Approche concentrée et méthodique sous pression, notamment en situation de réponse à incident.",
+      core06Item3: "Priorisation basée sur le risque : évaluer l'impact, l'exposition et l'exploitabilité pour décider de ce qui compte le plus.",
+      core06Item4: "Bonne collaboration avec des équipes locales et globales, côté IT, sécurité et métiers.",
+      core06Item5: "Développement d'un style de leadership basé sur la constance, l'accompagnement et un intérêt réel pour la progression des autres.",
+      core06Item6: "Communication claire, respectueuse et structurée qui aide à comprendre des situations complexes sans jargon inutile.",
+      core06Item7: "À l'aise avec la gestion de plusieurs workstreams en parallèle : PoV éditeurs, ingénierie de détection, coordination des parties prenantes et documentation.",
+      core06Item8: "Grande attention au détail lors de la production de livrables structurés : frameworks, documents de référence et rapports techniques.",
+      writingLabel: "Contenu",
+      writingTitle: "Articles Medium",
+      writingIntro: "Intégration en direct de mon flux Medium. Cette section affiche uniquement les articles cybersécurité les plus récents.",
+      mediumLoadingTag: "Chargement",
+      mediumLoadingTitle: "Récupération des derniers articles cybersécurité...",
+      mediumLoadingDesc: "Cette section récupère automatiquement les titres, résumés et dates de publication depuis le flux RSS Medium.",
+      mediumLoadingStatus: "Chargement des derniers articles cybersécurité...",
+      mediumReadAll: "Voir tous les articles",
+      mediumLoadedStatus: "{{count}} derniers articles cybersécurité chargés.",
+      mediumEmptyStatus: "Aucun article Medium spécifiquement cybersécurité n'est disponible pour le moment. Utilisez le bouton Voir tous les articles pour ouvrir Medium directement.",
+      mediumRecentArticle: "Article récent",
+      growthLabel: "Progression",
+      growthTitle: "Axes d'amélioration actuels",
+      growth1Title: "Threat intelligence stratégique",
+      growth1Detail: "Renforcement du cadrage long terme des menaces, de la construction du contexte adversaire et de la capacité à relier l'intelligence aux décisions opérationnelles.",
+      growth2Title: "Product Design & Development",
+      growth2Detail: "Amélioration de la manière dont des idées techniques deviennent des outils utiles, des workflows structurés et des livrables pratiques réellement exploitables par les équipes.",
+      growth3Title: "Leadership",
+      growth3Detail: "Amélioration de l'accompagnement, de la prise de décision, de la communication et de la capacité à faire grandir les équipes avec constance dans la durée.",
+      credentialsLabel: "Parcours",
+      credentialsTitle: "Formation & Certifications",
+      credentialsIntro: "Détails de formation initiale et d'apprentissage continu issus de mon parcours.",
+      educationHead: "Formation",
+      educationTitle: "Licence en technologies de l'information et de la communication",
+      educationDesc: "Spécialisation en sécurité réseau. Base solide en défense réseau, fondamentaux de la sécurité des systèmes et opérations cybersécurité pratiques.",
+      certificationHead: "Certification",
+      cert1Desc: "Analyse avancée du comportement des malwares, compréhension des flux d'exécution et techniques d'investigation structurées.",
+      cert2Desc: "Interprétation du renseignement centrée sur l'adversaire, priorisation guidée par le contexte et analyse des menaces orientée opérations.",
+      contactLabel: "Contact",
+      contactTitle: "Me contacter",
+      contactIntro: "Ouvert aux postes senior en ingénierie cybersécurité, aux missions de conseil et aux opportunités d'enseignement. Basé à Tallinn, Estonie.",
+      contactEmailLabel: "E-mail",
+      contactPhoneLabel: "Téléphone",
+      contactMediumLabel: "Medium",
+      contactLinkedInLabel: "LinkedIn",
+      contactLinkedInValue: "Profil professionnel",
+      terminalRole1: "Ingénieur cybersécurité senior",
+      terminalRole2: "DFIR / Détection / Architecture sécurité",
+      terminalLocation: "Tallinn, Estonie",
+      terminalLocationDim: "Ouvert au remote et à la mobilité",
+      terminalLang1: "Arabe",
+      terminalLang2: "Anglais",
+      terminalLang3: "Français",
+      terminalStatus: "[open] Disponible pour de nouvelles opportunités",
+      footerBuiltWith: "Construit avec un support de développement assisté par IA",
+      footerBackToTop: "Retour en haut",
+      themeTextDark: "Sombre",
+      themeTextLight: "Clair",
+      themeToggleAria: "Basculer entre le thème clair et sombre",
+      languageToggleAriaToFr: "Passer en français",
+      languageToggleAriaToEn: "Passer en anglais"
+    }
+  };
+
+  function interpolate(template, values) {
+    return String(template || '').replace(/\{\{(\w+)\}\}/g, function (match, key) {
+      return values && Object.prototype.hasOwnProperty.call(values, key) ? values[key] : '';
+    });
+  }
+
+  var languageManager = (function () {
+    var storageKey = 'portfolio-language';
+    var transitionDurationOut = 500;
+    var transitionDurationIn = 500;
+    var transitionBuffer = 36;
+    var body = document.body;
+    var documentElement = document.documentElement;
+    var descriptionMeta = document.getElementById('meta-description');
+    var pageContent = document.getElementById('page-content');
+    var languageToggle = document.getElementById('language-toggle');
+    var languageIndicators = languageToggle ? Array.prototype.slice.call(languageToggle.querySelectorAll('[data-lang-indicator]')) : [];
+    var prefersReducedMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var callbacks = [];
+    var currentLanguage = 'en';
+    var isTransitioning = false;
+
+    function hasTranslation(language) {
+      return Object.prototype.hasOwnProperty.call(translations, language);
+    }
+
+    function getText(key) {
+      if (hasTranslation(currentLanguage) && Object.prototype.hasOwnProperty.call(translations[currentLanguage], key)) {
+        return translations[currentLanguage][key];
+      }
+      if (Object.prototype.hasOwnProperty.call(translations.en, key)) {
+        return translations.en[key];
+      }
+      return key;
+    }
+
+    function updateTextNodes() {
+      Array.prototype.forEach.call(document.querySelectorAll('[data-i18n]'), function (element) {
+        var key = element.getAttribute('data-i18n');
+        var value = getText(key);
+        if (element.hasAttribute('data-i18n-html')) {
+          element.innerHTML = value;
+          return;
+        }
+        element.textContent = value;
+      });
+    }
+
+    function updateLanguageToggle() {
+      if (!languageToggle) {
+        return;
+      }
+
+      languageIndicators.forEach(function (indicator) {
+        indicator.classList.toggle('is-active', indicator.getAttribute('data-lang-indicator') === currentLanguage);
+      });
+
+      languageToggle.setAttribute(
+        'aria-label',
+        currentLanguage === 'fr' ? getText('languageToggleAriaToEn') : getText('languageToggleAriaToFr')
+      );
+    }
+
+    function persistLanguage(language) {
+      try {
+        localStorage.setItem(storageKey, language);
+      } catch (error) {
+        /* Ignore storage restrictions */
+      }
+    }
+
+    function notify() {
+      callbacks.forEach(function (callback) {
+        callback(currentLanguage);
+      });
+    }
+
+    function setTransitionState(direction, isActive) {
+      body.classList.remove('lang-direction-left', 'lang-direction-right');
+      body.classList.toggle('is-language-transitioning', isActive);
+      if (isActive) {
+        body.classList.add(direction === 'left' ? 'lang-direction-left' : 'lang-direction-right');
+      }
+    }
+
+    function resetPageContentState() {
+      if (!pageContent) {
+        return;
+      }
+      pageContent.classList.remove('is-exiting', 'is-entering', 'is-transition-reset');
+    }
+
+    function forceReflow(element) {
+      void element.offsetWidth;
+    }
+
+    function normalizeOptions(persistOrOptions) {
+      if (typeof persistOrOptions === 'boolean') {
+        return {
+          persist: persistOrOptions,
+          notify: true
+        };
+      }
+
+      return {
+        persist: !!(persistOrOptions && persistOrOptions.persist),
+        notify: !persistOrOptions || persistOrOptions.notify !== false
+      };
+    }
+
+    function applyLanguage(language, persistOrOptions) {
+      var options = normalizeOptions(persistOrOptions);
+      currentLanguage = hasTranslation(language) ? language : 'en';
+      documentElement.lang = currentLanguage;
+      document.title = getText('documentTitle');
+      if (descriptionMeta) {
+        descriptionMeta.setAttribute('content', getText('documentDescription'));
+      }
+      updateTextNodes();
+      updateLanguageToggle();
+      if (options.persist) {
+        persistLanguage(currentLanguage);
+      }
+      if (options.notify) {
+        notify();
+      }
+    }
+
+    function getSavedLanguage() {
+      try {
+        var storedLanguage = localStorage.getItem(storageKey);
+        return hasTranslation(storedLanguage) ? storedLanguage : null;
+      } catch (error) {
+        return null;
+      }
+    }
+
+    function detectBrowserLanguage() {
+      var browserLanguage = ((navigator.language || navigator.userLanguage) || 'en').toLowerCase();
+      return browserLanguage.indexOf('fr') === 0 ? 'fr' : 'en';
+    }
+
+    function animateLanguageChange(nextLanguage) {
+      var direction = nextLanguage === 'fr' ? 'left' : 'right';
+
+      if (!hasTranslation(nextLanguage) || nextLanguage === currentLanguage) {
+        return;
+      }
+
+      if (!pageContent || prefersReducedMotion || isTransitioning) {
+        applyLanguage(nextLanguage, {
+          persist: true,
+          notify: true
+        });
+        return;
+      }
+
+      isTransitioning = true;
+      if (languageToggle) {
+        languageToggle.disabled = true;
+      }
+
+      setTransitionState(direction, true);
+      resetPageContentState();
+      forceReflow(pageContent);
+      pageContent.classList.add('is-exiting');
+
+      window.setTimeout(function () {
+        pageContent.classList.remove('is-exiting');
+        pageContent.classList.add('is-entering', 'is-transition-reset');
+        applyLanguage(nextLanguage, {
+          persist: true,
+          notify: true
+        });
+        forceReflow(pageContent);
+        pageContent.classList.remove('is-transition-reset');
+
+        window.requestAnimationFrame(function () {
+          pageContent.classList.remove('is-entering');
+
+          window.setTimeout(function () {
+            resetPageContentState();
+            setTransitionState(direction, false);
+            if (languageToggle) {
+              languageToggle.disabled = false;
+            }
+            isTransitioning = false;
+          }, transitionDurationIn + transitionBuffer);
+        });
+      }, transitionDurationOut + transitionBuffer);
+    }
+
+    applyLanguage(getSavedLanguage() || detectBrowserLanguage(), {
+      persist: false,
+      notify: true
+    });
+
+    if (languageToggle) {
+      languageToggle.addEventListener('click', function () {
+        animateLanguageChange(currentLanguage === 'en' ? 'fr' : 'en');
+      });
+    }
+
+    return {
+      getLanguage: function () {
+        return currentLanguage;
+      },
+      setLanguage: applyLanguage,
+      t: getText,
+      onChange: function (callback) {
+        if (typeof callback === 'function') {
+          callbacks.push(callback);
+        }
+      }
+    };
+  }());
+
+  (function () {
+    var i18nElements = Array.prototype.slice.call(document.querySelectorAll('[data-i18n]')).filter(function (element) {
+      return !element.closest('.nav-links');
+    });
+    var languages = Object.keys(translations);
+    var resizeTimer = null;
+
+    if (!i18nElements.length || !languages.length) {
+      return;
+    }
+
+    function clearConstraints() {
+      i18nElements.forEach(function (element) {
+        element.style.minWidth = '';
+        element.style.minHeight = '';
+      });
+    }
+
+    function shouldLockWidth(element, width) {
+      var parent = element.parentElement;
+      if (!parent || !width) {
+        return false;
+      }
+
+      var parentWidth = Math.ceil(parent.getBoundingClientRect().width);
+      return parentWidth > 0 && width < parentWidth - 4;
+    }
+
+    function stabilizeTranslations() {
+      var activeLanguage = languageManager.getLanguage();
+      var measurements = i18nElements.map(function () {
+        return { width: 0, height: 0, lockWidth: false };
+      });
+
+      clearConstraints();
+
+      languages.forEach(function (language) {
+        languageManager.setLanguage(language, {
+          persist: false,
+          notify: false
+        });
+
+        i18nElements.forEach(function (element, index) {
+          var rect = element.getBoundingClientRect();
+          var width = Math.ceil(rect.width);
+          var height = Math.ceil(rect.height);
+
+          measurements[index].width = Math.max(measurements[index].width, width);
+          measurements[index].height = Math.max(measurements[index].height, height);
+          measurements[index].lockWidth = measurements[index].lockWidth || shouldLockWidth(element, width);
+        });
+      });
+
+      languageManager.setLanguage(activeLanguage, {
+        persist: false,
+        notify: false
+      });
+
+      i18nElements.forEach(function (element, index) {
+        if (measurements[index].lockWidth && measurements[index].width > 0) {
+          element.style.minWidth = measurements[index].width + 'px';
+        }
+        if (measurements[index].height > 0) {
+          element.style.minHeight = measurements[index].height + 'px';
+        }
+      });
+    }
+
+    function scheduleStabilization() {
+      window.requestAnimationFrame(stabilizeTranslations);
+    }
+
+    scheduleStabilization();
+
+    if (document.fonts && document.fonts.ready) {
+      document.fonts.ready.then(scheduleStabilization);
+    }
+
+    window.addEventListener('load', scheduleStabilization);
+    window.addEventListener('resize', function () {
+      clearTimeout(resizeTimer);
+      resizeTimer = window.setTimeout(scheduleStabilization, 120);
+    });
+  }());
 
   (function () {
     var listEl = document.getElementById('core-skills-list');
@@ -1672,11 +2352,17 @@ footer a { color: var(--cyan); text-decoration: none; }
     var toggle = document.getElementById('theme-toggle');
     var toggleText = document.getElementById('toggle-text');
 
+    function updateThemeLabel() {
+      var isLight = body.classList.contains('theme-light');
+      toggle.setAttribute('aria-label', languageManager.t('themeToggleAria'));
+      toggleText.textContent = isLight ? languageManager.t('themeTextLight') : languageManager.t('themeTextDark');
+    }
+
     function applyTheme(theme, persist) {
       var isLight = theme === 'light';
       body.classList.toggle('theme-light', isLight);
       toggle.setAttribute('aria-pressed', String(isLight));
-      toggleText.textContent = isLight ? 'Light' : 'Dark';
+      updateThemeLabel();
       if (persist) {
         try {
           localStorage.setItem(storageKey, theme);
@@ -1696,6 +2382,7 @@ footer a { color: var(--cyan); text-decoration: none; }
     var prefersLight = window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches;
     var initialTheme = savedTheme || (prefersLight ? 'light' : 'dark');
     applyTheme(initialTheme, false);
+    languageManager.onChange(updateThemeLabel);
 
     toggle.addEventListener('click', function () {
       var nextTheme = body.classList.contains('theme-light') ? 'dark' : 'light';
@@ -1710,6 +2397,8 @@ footer a { color: var(--cyan); text-decoration: none; }
       return;
     }
 
+    var mediumState = 'loading';
+    var renderedPosts = [];
     var mediumUsername = 'noussayr.derbel';
     var postsLimit = 3;
     var feedUrl = 'https://medium.com/feed/@' + mediumUsername;
@@ -1773,12 +2462,28 @@ footer a { color: var(--cyan); text-decoration: none; }
       return (tmp.textContent || tmp.innerText || '').replace(/\s+/g, ' ').trim();
     }
 
+    function renderLoading() {
+      mediumFeedEl.innerHTML =
+        '<article class="article-card">' +
+          '<span class="article-tag">' + escapeHtml(languageManager.t('mediumLoadingTag')) + '</span>' +
+          '<div class="article-title">' + escapeHtml(languageManager.t('mediumLoadingTitle')) + '</div>' +
+          '<div class="article-desc">' + escapeHtml(languageManager.t('mediumLoadingDesc')) + '</div>' +
+          '<div class="article-meta"><span>medium.com/@' + mediumUsername + '</span><span class="article-arrow">-&gt;</span></div>' +
+        '</article>';
+      mediumStatusEl.textContent = languageManager.t('mediumLoadingStatus');
+    }
+
+    function renderEmpty() {
+      mediumFeedEl.innerHTML = '';
+      mediumStatusEl.textContent = languageManager.t('mediumEmptyStatus');
+    }
+
     function formatDate(dateValue) {
       var date = new Date(dateValue);
       if (Number.isNaN(date.getTime())) {
-        return 'Recent article';
+        return languageManager.t('mediumRecentArticle');
       }
-      return date.toLocaleDateString('en-GB', {
+      return date.toLocaleDateString(languageManager.getLanguage() === 'fr' ? 'fr-FR' : 'en-GB', {
         year: 'numeric',
         month: 'short',
         day: '2-digit'
@@ -1839,6 +2544,7 @@ footer a { color: var(--cyan); text-decoration: none; }
     }
 
     function renderPosts(items) {
+      renderedPosts = items.slice();
       mediumFeedEl.innerHTML = items.map(function (item) {
         var title = escapeHtml(item.title || 'Untitled article');
         var tag = escapeHtml(formatTagLabel(getCyberTag(item)));
@@ -1856,7 +2562,27 @@ footer a { color: var(--cyan); text-decoration: none; }
           '</a>'
         );
       }).join('');
+      mediumStatusEl.textContent = interpolate(languageManager.t('mediumLoadedStatus'), {
+        count: items.length
+      });
     }
+
+    function rerenderMediumState() {
+      if (mediumState === 'loaded' && renderedPosts.length) {
+        renderPosts(renderedPosts);
+        return;
+      }
+
+      if (mediumState === 'empty') {
+        renderEmpty();
+        return;
+      }
+
+      renderLoading();
+    }
+
+    languageManager.onChange(rerenderMediumState);
+    renderLoading();
 
     fetch(apiUrl)
       .then(function (response) {
@@ -1873,12 +2599,12 @@ footer a { color: var(--cyan); text-decoration: none; }
         if (posts.length === 0) {
           throw new Error('No cybersecurity articles returned');
         }
+        mediumState = 'loaded';
         renderPosts(posts);
-        mediumStatusEl.textContent = 'Latest ' + posts.length + ' cybersecurity articles loaded.';
       })
       .catch(function () {
-        mediumFeedEl.innerHTML = '';
-        mediumStatusEl.textContent = 'No cybersecurity-specific Medium articles are available right now. Use the Read All Articles button to open Medium directly.';
+        mediumState = 'empty';
+        renderEmpty();
       });
   })();
 </script>
